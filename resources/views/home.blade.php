@@ -13,14 +13,14 @@
         }
         .welcome-bg {
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-                url('/images/home.png');
+                url('/images/anambas.jpg');
             background-size: cover;
             background-position: center;
         }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header/Navigation -->
+    <!-- Header -->
     <header class="hero-bg text-white relative">
         <nav class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="text-2xl font-bold">KulineRiau</div>
@@ -37,6 +37,8 @@
             </div>
         </nav>
     </header>
+
+    <!-- Hero Section -->
     <div class="welcome-bg">
         <div class="container mx-auto px-6 py-16 flex flex-col justify-center items-center min-h-[40vh] text-center">
             <div class="max-w-4xl mx-auto">
@@ -48,6 +50,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Menu Andalan Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">Menu Andalan Kami</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Menu 1 -->
+                <div class="bg-white rounded-lg shadow hover:shadow-lg transition">
+                    <img src="/images/rendang.jpg" alt="Rendang Riau" class="rounded-t-lg w-full h-56 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-semibold mb-2">Rendang Riau</h3>
+                        <p class="text-gray-600">Cita rasa rendang khas Riau yang gurih, kaya rempah, dan bikin nagih.</p>
+                    </div>
+                </div>
+                <!-- Menu 2 -->
+                <div class="bg-white rounded-lg shadow hover:shadow-lg transition">
+                    <img src="/images/laksamana.jpg" alt="Laksamana Mengamuk" class="rounded-t-lg w-full h-56 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-semibold mb-2">Laksamana Mengamuk</h3>
+                        <p class="text-gray-600">Minuman tradisional segar berbahan dasar mangga kuini dan santan.</p>
+                    </div>
+                </div>
+                <!-- Menu 3 -->
+                <div class="bg-white rounded-lg shadow hover:shadow-lg transition">
+                    <img src="/images/roti-jala.jpg" alt="Roti Jala" class="rounded-t-lg w-full h-56 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-semibold mb-2">Roti Jala</h3>
+                        <p class="text-gray-600">Roti lembut yang disajikan dengan kari ayam khas Melayu Riau.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="bg-blue-900 text-white py-8">
         <div class="container mx-auto px-6 text-center">
             <div class="mb-4">
