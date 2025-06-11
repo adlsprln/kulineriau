@@ -16,7 +16,7 @@
                 url('/images/anambas.jpg');
             background-size: cover;
             background-position: center;
-        }
+        } 
     </style>
 </head>
 <body class="bg-gray-50">
