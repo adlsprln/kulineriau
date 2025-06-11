@@ -1,14 +1,25 @@
 @extends('layouts.app')
 @section('title', 'History')
 @section('content')
-<div class="flex flex-col items-center justify-center min-h-[60vh] bg-gradient-to-br from-red-50 to-pink-50">
-    <div class="bg-white rounded-2xl shadow-xl p-10 w-full max-w-2xl border border-red-100">
-        <h1 class="text-3xl font-extrabold text-red-700 mb-4 text-center">Riwayat Pesanan</h1>
-        <p class="text-lg text-gray-700 max-w-xl text-center mb-6">Lihat riwayat pesanan Anda di sini. Semua transaksi tercatat dengan aman dan transparan.</p>
-        <div class="text-center text-gray-400 py-8">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 text-red-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a2 2 0 012-2h2a2 2 0 012 2v2m-6 4h6a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            <p>Belum ada riwayat pesanan.</p>
-        </div>
+<div class="container mx-auto px-6 py-20 text-center">
+    <h1 class="text-4xl font-bold text-red-700 mb-8">Riwayat Pemesanan</h1>
+    <p class="text-lg text-gray-700 max-w-xl mx-auto mb-6">Berikut adalah daftar pesanan Anda yang telah tercatat.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @if(session('order_history'))
+            @php
+                $menuNames = \App\Models\Menu::pluck('name', 'id')->toArray();
+            @endphp
+            @foreach(session('order_history') as $order)
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
+                <h2 class="text-xl font-bold text-blue-900 mt-2">{{ $menuNames[$order['menu_id']] ?? 'Menu tidak ditemukan' }}</h2>
+                <p class="text-gray-600 mt-2">Metode Pembayaran: {{ $order['payment_method'] }}</p>
+                <p class="text-gray-600 mt-2">Permintaan Pembeli: {{ $order['buyer_request'] ?? 'Tidak ada' }}</p>
+                <p class="text-red-700 font-bold mt-4">Tanggal: {{ $order['created_at'] }}</p>
+            </div>
+            @endforeach
+        @else
+            <p class="text-gray-500">Belum ada riwayat pesanan.</p>
+        @endif
     </div>
 </div>
 @endsection

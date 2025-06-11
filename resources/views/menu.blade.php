@@ -16,7 +16,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<<body class="bg-gray-50">
     <header class="hero-bg text-white relative">
         <nav class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="text-2xl font-bold">KulineRiau</div>
@@ -33,52 +33,39 @@
             </div>
         </nav>
     </header>
-    <div class="container mx-auto px-6 py-20">
-        <h1 class="text-4xl font-bold text-center text-red-700 mb-8">Daftar Menu</h1>
-        <div class="overflow-x-auto w-full max-w-3xl mx-auto rounded-lg shadow-lg bg-white">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gradient-to-r from-red-600 to-pink-500 text-white">
-                    <tr>
-                        <th class="py-3 px-6 text-left text-xs font-bold uppercase tracking-wider">Nama</th>
-                        <th class="py-3 px-6 text-left text-xs font-bold uppercase tracking-wider">Deskripsi</th>
-                        <th class="py-3 px-6 text-left text-xs font-bold uppercase tracking-wider">Harga</th>
-                        @if(Auth::check() && Auth::user()->isAdmin())
-                            <th class="py-3 px-6 text-center text-xs font-bold uppercase tracking-wider">Aksi</th>
-                        @endif
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($menus as $menu)
-                    <tr class="hover:bg-gray-50 transition-all">
-                        <td class="py-4 px-6 font-medium text-gray-900">{{ $menu->name }}</td>
-                        <td class="py-4 px-6 text-gray-700">{{ $menu->description }}</td>
-                        <td class="py-4 px-6 text-red-600 font-bold">Rp {{ number_format($menu->price,0,',','.') }}</td>
-                        @if(Auth::check() && Auth::user()->isAdmin())
-                        <td class="py-4 px-6 text-center">
-                            <a href="{{ route('menu.edit', $menu) }}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded mr-2 transition-all duration-150">Edit</a>
-                            <form action="{{ route('menu.destroy', $menu) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="inline-block bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded transition-all duration-150" onclick="return confirm('Yakin hapus menu?')">Hapus</button>
-                            </form>
-                        </td>
-                        @endif
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="bg-blue-900 py-20 min-h-screen">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <input type="text" placeholder="Cari menu..." class="w-full max-w-md px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+            </div>
+            <h1 class="text-4xl font-bold text-white mb-2 text-center">Menu Populer</h1>
+            <p class="text-lg text-yellow-300 mb-8 text-center">Best Seller</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($menus as $menu)
+                <div class="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center">
+                    @if(strtolower($menu->name) === 'gonggong')
+                        <img src="/images/gonggong.jpeg" alt="Gonggong" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
+                    @else
+                        <img src="{{ $menu->image_url }}" alt="{{ $menu->name }}" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
+                    @endif
+                    <h2 class="text-xl font-bold text-blue-900 mt-2">{{ $menu->name }}</h2>
+                    <p class="text-gray-500 mt-1 mb-2">{{ $menu->description }}</p>
+                    <p class="text-red-700 font-bold text-lg mb-2">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
+                    <div class="flex justify-center mb-4">
+                        @for($i = 0; $i < 5; $i++)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.382 2.453a1 1 0 00-.364 1.118l1.286 3.967c.3.921-.755 1.688-1.54 1.118l-3.382-2.453a1 1 0 00-1.176 0l-3.382 2.453c-.784.57-1.838-.197-1.54-1.118l1.286-3.967a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.381-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
+                            </svg>
+                        @endfor
+                    </div>
+                    <form action="{{ route('order') }}" method="GET" class="w-full">
+                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                        <button type="submit" class="bg-yellow-300 text-blue-900 font-bold px-4 py-2 rounded-lg w-full hover:bg-yellow-400 transition">Beli Sekarang</button>
+                    </form>
+                </div>
+                @endforeach
+            </div>
         </div>
-        @if(Auth::check() && Auth::user()->isAdmin())
-            <div class="text-center mt-8">
-                <a href="{{ route('menu.create') }}" class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-pink-500 hover:to-red-500 text-white px-6 py-2 rounded-lg shadow font-semibold transition-all duration-200">+ Tambah Menu</a>
-            </div>
-        @endif
-        @if(Auth::guest())
-            <div class="mt-8 text-center">
-                <a href="{{ route('login') }}" class="text-blue-600 underline">Login</a> atau
-                <a href="{{ route('register') }}" class="text-blue-600 underline">Register</a> untuk akses lebih lanjut.
-            </div>
-        @endif
     </div>
     <footer class="bg-blue-900 text-white py-8 mt-16">
         <div class="container mx-auto px-6 text-center">

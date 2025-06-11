@@ -47,6 +47,9 @@ class User extends Authenticatable
         ];
     }
     
+    /**
+     * Mengecek apakah user adalah admin.
+     */
     public function isAdmin()
     {
         return $this->role === 'admin';

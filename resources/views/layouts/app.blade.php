@@ -5,34 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'KULINERIAU')</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <nav class="bg-white shadow mb-8">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" class="font-bold text-xl text-red-600">KULINERIAU</a>
-            <ul class="flex space-x-6 items-center">
-                <li><a href="/" class="hover:text-red-600">Home</a></li>
-                <li><a href="/menu" class="hover:text-red-600">Menu</a></li>
-                <li><a href="/order" class="hover:text-red-600"
-                   @if(Auth::guest())
-                      onclick="alert('Silakan login untuk melakukan order!'); return false;"
-                   @endif
-                >Order</a></li>
-                <li><a href="/tentangkami" class="hover:text-red-600">Tentang Kami</a></li>
-                <li><a href="/contact" class="hover:text-red-600">Contact</a></li>
-                <li><a href="/history" class="hover:text-red-600">History</a></li>
+    <nav class="bg-blue-900 text-white shadow mb-8">
+        <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="text-2xl font-bold">KulineRiau</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="/" class="hover:text-yellow-300 transition-colors">Home</a>
+                <a href="/menu" class="hover:text-yellow-300 transition-colors">Menu</a>
+                <a href="/tentangkami" class="hover:text-yellow-300 transition-colors">Tentang Kami</a>
+                <a href="/order" class="hover:text-yellow-300 transition-colors">Order</a>
+                <a href="/contact" class="hover:text-yellow-300 transition-colors">Kontak</a>
+                <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
+            </div>
+            <div>
                 @if(Auth::check())
-                    <li class="ml-4 text-gray-700">Halo, {{ Auth::user()->name }}</li>
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST" class="inline">
-                            @csrf
-                            <button type="submit" class="hover:text-red-600">Logout</button>
-                        </form>
-                    </li>
+                    <span class="mr-4">Halo, {{ Auth::user()->name }}</span>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="bg-white text-blue-900 font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-blue-900 transition">Logout</button>
+                    </form>
                 @else
-                    <li><a href="{{ route('login') }}" class="hover:text-red-600 font-semibold">Login</a></li>
+                    <a href="{{ route('login') }}" class="bg-white text-blue-900 font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-blue-900 transition">Login</a>
                 @endif
-            </ul>
+            </div>
         </div>
     </nav>
     <main class="container mx-auto px-4 py-8">

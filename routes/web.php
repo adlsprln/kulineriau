@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Menu;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
     return view('home');
@@ -11,12 +12,19 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('home');
 });
-Route::get('/menu', function () {
-    return view('menu');
-});
+// Route resource menu untuk semua route CRUD (admin),
+// dan route index publik agar route('menu.index') tersedia
+Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
+Route::resource('menu', MenuController::class)->except(['index', 'show'])->middleware('auth');
+
 Route::get('/order', function () {
-    return view('order');
-});
+    $menus = Menu::all();
+    return view('order', compact('menus'));
+})->middleware('auth');
+Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/payment', [OrderController::class, 'payment'])->name('payment.process');
+Route::get('/order', [OrderController::class, 'showOrder'])->middleware('auth')->name('order');
+
 Route::get('/tentangkami', function () {
     return view('tentangkami');
 });
@@ -25,8 +33,8 @@ Route::get('/contact', function () {
 });
 Route::get('/history', function () {
     return view('history');
-});
-Route::resource('menu', MenuController::class)->middleware('auth');
+})->middleware('auth')->name('history');
+
 Route::get('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');

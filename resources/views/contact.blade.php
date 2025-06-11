@@ -10,17 +10,18 @@
         body { font-family: 'Inter', sans-serif; }
         .hero-bg {
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-                        url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1200 800\"><rect fill=\"%230f2a60\" width=\"1200\" height=\"800\"/></svg>');
+                url('/images/kontak.jpeg');
             background-size: cover;
             background-position: center;
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <header class="hero-bg text-white relative">
-        <nav class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+<body class="hero-bg min-h-screen flex flex-col">
+    <!-- Header/Navigation -->
+    <header>
+        <nav class="bg-[#0a1c40] text-white max-w-full px-8 py-4 flex items-center justify-between rounded-b-2xl shadow-lg">
             <div class="text-2xl font-bold">KulineRiau</div>
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex space-x-10 font-semibold">
                 <a href="/" class="hover:text-yellow-300 transition-colors">Home</a>
                 <a href="/menu" class="hover:text-yellow-300 transition-colors">Menu</a>
                 <a href="/tentangkami" class="hover:text-yellow-300 transition-colors">Tentang Kami</a>
@@ -29,13 +30,13 @@
                 <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
             </div>
             <div>
-                <a href="/login" class="bg-white text-blue-900 font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-blue-900 transition">Login</a>
+                <a href="/login" class="bg-white text-[#0a1c40] font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-[#0a1c40] transition">Login</a>
             </div>
         </nav>
     </header>
-    <div class="container mx-auto px-6 py-20">
-        <div class="bg-white rounded-2xl shadow-xl p-10 w-full max-w-lg border border-red-100 mx-auto">
-            <h1 class="text-4xl font-extrabold text-red-700 mb-4 text-center">Hubungi Kami</h1>
+    <div class="flex-1 flex items-center justify-center py-20">
+        <div class="bg-white/80 rounded-2xl shadow-xl p-10 w-full max-w-lg border border-red-100 mx-auto">
+            <h1 class="text-4xl font-extrabold text-blue-900 mb-4 text-center">Hubungi Kami</h1>
             <p class="text-lg text-gray-700 max-w-xl text-center mb-6">Ada pertanyaan, kritik, atau saran? Silakan hubungi kami melalui form di bawah ini atau kontak resmi kami.</p>
             <form>
                 <div class="mb-4">
