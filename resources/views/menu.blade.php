@@ -16,7 +16,7 @@
         }
     </style>
 </head>
-<<body class="bg-gray-50">
+<body class="bg-gray-50">
     <header class="hero-bg text-white relative">
         <nav class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="text-2xl font-bold">KulineRiau</div>
@@ -36,34 +36,38 @@
     <div class="bg-blue-900 py-20 min-h-screen">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
-                <input type="text" placeholder="Cari menu..." class="w-full max-w-md px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                <form method="GET" action="" class="flex justify-center">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari menu..." class="w-full max-w-md px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                    <button type="submit" class="ml-2 px-4 py-2 bg-yellow-300 text-blue-900 font-bold rounded-lg hover:bg-yellow-400 transition">Cari</button>
+                </form>
             </div>
-            <h1 class="text-4xl font-bold text-white mb-2 text-center">Menu Populer</h1>
-            <p class="text-lg text-yellow-300 mb-8 text-center">Best Seller</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($menus as $menu)
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                @php
+                    $filteredMenus = $menus;
+                    if(request('search')) {
+                        $filteredMenus = $menus->filter(function($menu) {
+                            return stripos($menu->name, request('search')) !== false || stripos($menu->description, request('search')) !== false;
+                        });
+                    }
+                @endphp
+                @forelse($filteredMenus as $menu)
                 <div class="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center">
                     @if(strtolower($menu->name) === 'gonggong')
                         <img src="/images/gonggong.jpeg" alt="Gonggong" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
                     @else
-                        <img src="{{ $menu->image_url }}" alt="{{ $menu->name }}" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
+                        <img src="{{ $menu->image_url ?? '/images/default.jpg' }}" alt="{{ $menu->name }}" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
                     @endif
                     <h2 class="text-xl font-bold text-blue-900 mt-2">{{ $menu->name }}</h2>
                     <p class="text-gray-500 mt-1 mb-2">{{ $menu->description }}</p>
                     <p class="text-red-700 font-bold text-lg mb-2">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
-                    <div class="flex justify-center mb-4">
-                        @for($i = 0; $i < 5; $i++)
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.382 2.453a1 1 0 00-.364 1.118l1.286 3.967c.3.921-.755 1.688-1.54 1.118l-3.382-2.453a1 1 0 00-1.176 0l-3.382 2.453c-.784.57-1.838-.197-1.54-1.118l1.286-3.967a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.381-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
-                            </svg>
-                        @endfor
-                    </div>
                     <form action="{{ route('order') }}" method="GET" class="w-full">
                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                         <button type="submit" class="bg-yellow-300 text-blue-900 font-bold px-4 py-2 rounded-lg w-full hover:bg-yellow-400 transition">Beli Sekarang</button>
                     </form>
                 </div>
-                @endforeach
+                @empty
+                <div class="col-span-full text-white text-lg">Menu tidak ditemukan.</div>
+                @endforelse
             </div>
         </div>
     </div>

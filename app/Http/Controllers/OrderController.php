@@ -11,6 +11,7 @@ class OrderController extends Controller
     {
         $validated = $request->validate([
             'menu_id' => 'required|exists:menus,id',
+            'quantity' => 'required|integer|min:1',
             'payment_method' => 'required|string',
             'buyer_request' => 'nullable|string',
         ]);
@@ -18,6 +19,7 @@ class OrderController extends Controller
         // Logic for storing the order
         $order = [
             'menu_id' => $validated['menu_id'],
+            'quantity' => $validated['quantity'],
             'payment_method' => $validated['payment_method'],
             'buyer_request' => $validated['buyer_request'],
             'created_at' => now(),

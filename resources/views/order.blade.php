@@ -29,7 +29,15 @@
                 <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
             </div>
             <div>
-                <a href="/login" class="bg-white text-blue-900 font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-blue-900 transition">Login</a>
+                @if(Auth::check())
+                    <span class="mr-4 text-yellow-300 font-semibold">Hello, {{ Auth::user()->name }}!</span>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="bg-white text-blue-900 font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-blue-900 transition">Logout</button>
+                    </form>
+                @else
+                    <a href="/login" class="bg-white text-blue-900 font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-blue-900 transition">Login</a>
+                @endif
             </div>
         </nav>
     </header>
@@ -51,6 +59,10 @@
                     <form action="{{ route('order.store') }}" method="POST" class="mt-4">
                         @csrf
                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                        <div class="mb-4">
+                            <label for="quantity_{{ $menu->id }}" class="block text-left text-gray-700 font-bold mb-2">Jumlah:</label>
+                            <input type="number" name="quantity" id="quantity_{{ $menu->id }}" min="1" value="1" class="w-full border-gray-300 rounded-lg" required>
+                        </div>
                         <div class="mb-4">
                             <label for="payment_method" class="block text-left text-gray-700 font-bold mb-2">Metode Pembayaran:</label>
                             <select name="payment_method" id="payment_method" class="w-full border-gray-300 rounded-lg">

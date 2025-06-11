@@ -48,6 +48,37 @@
             </div>
         </div>
     </div>
+
+    <!-- Menu Andalan Section: Menu Terfavorit -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">Menu Populer</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                @php
+                    // Ambil 3 menu dengan rating tertinggi (dummy jika belum ada tabel rating)
+                    $favoriteMenus = \App\Models\Menu::orderByDesc('rating')->take(3)->get();
+                @endphp
+                @foreach($favoriteMenus as $menu)
+                <div class="bg-white rounded-lg shadow hover:shadow-lg transition">
+                    <img src="{{ $menu->image_url ?? '/images/default.jpg' }}" alt="{{ $menu->name }}" class="rounded-t-lg w-full h-56 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-semibold mb-2">{{ $menu->name }}</h3>
+                        <p class="text-gray-600">{{ $menu->description }}</p>
+                        <div class="flex items-center mt-3">
+                            @for($i = 0; $i < 5; $i++)
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 {{ $i < ($menu->rating ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.382 2.453a1 1 0 00-.364 1.118l1.286 3.967c.3.921-.755 1.688-1.54 1.118l-3.382-2.453a1 1 0 00-1.176 0l-3.382 2.453c-.784.57-1.838-.197-1.54-1.118l1.286-3.967a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.381-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
+                                </svg>
+                            @endfor
+                            <span class="ml-2 text-sm text-gray-500">({{ $menu->rating ?? 0 }})</span>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-blue-900 text-white py-8">
         <div class="container mx-auto px-6 text-center">
             <div class="mb-4">

@@ -17,6 +17,8 @@ Route::get('/home', function () {
 Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
 Route::resource('menu', MenuController::class)->except(['index', 'show'])->middleware('auth');
 
+Route::post('/menu/{menu}/rate', [App\Http\Controllers\MenuController::class, 'rate'])->name('menu.rate');
+
 Route::get('/order', function () {
     $menus = Menu::all();
     return view('order', compact('menus'));
