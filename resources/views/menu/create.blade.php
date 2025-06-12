@@ -10,7 +10,7 @@
         </ul>
     </div>
 @endif
-<form action="{{ route('menu.store') }}" method="POST" class="space-y-4">
+<form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
     @csrf
     <div>
         <label class="block">Nama Menu</label>
@@ -23,6 +23,10 @@
     <div>
         <label class="block">Harga</label>
         <input type="number" name="price" class="border rounded px-3 py-2 w-full" value="{{ old('price') }}" required>
+    </div>
+    <div>
+        <label class="block">Foto/Gambar Menu</label>
+        <input type="file" name="image" accept="image/*" class="border rounded px-3 py-2 w-full">
     </div>
     <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Simpan</button>
     <a href="{{ route('menu.index') }}" class="ml-2 text-gray-600">Batal</a>

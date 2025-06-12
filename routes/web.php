@@ -36,6 +36,40 @@ Route::get('/contact', function () {
 Route::get('/history', function () {
     return view('history');
 })->middleware('auth')->name('history');
+Route::delete('/history/{index}', function ($index) {
+    $orderHistory = session('order_history', []);
+    if (isset($orderHistory[$index])) {
+        unset($orderHistory[$index]);
+        // Reindex array agar tidak ada index yang hilang
+        $orderHistory = array_values($orderHistory);
+        session(['order_history' => $orderHistory]);
+    }
+    return redirect()->route('history')->with('success', 'Pesanan berhasil dibatalkan/dihapus.');
+})->name('history.delete');
+Route::match(['get', 'post', 'delete'], '/order/{menu_id}', function ($menu_id) {
+    $orderHistory = session('order_history', []);
+    foreach ($orderHistory as $i => $order) {
+        if ($order['menu_id'] == $menu_id) {
+            unset($orderHistory[$i]);
+            break;
+        }
+    }
+    $orderHistory = array_values($orderHistory);
+    session(['order_history' => $orderHistory]);
+    return back()->with('success', 'Pesanan berhasil dihapus.');
+})->name('order.delete');
+Route::post('/order/{menu_id}/delete', function ($menu_id) {
+    $orderHistory = session('order_history', []);
+    foreach ($orderHistory as $i => $order) {
+        if ($order['menu_id'] == $menu_id) {
+            unset($orderHistory[$i]);
+            break;
+        }
+    }
+    $orderHistory = array_values($orderHistory);
+    session(['order_history' => $orderHistory]);
+    return back()->with('success', 'Pesanan berhasil dihapus.');
+})->name('order.delete');
 
 Route::get('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);

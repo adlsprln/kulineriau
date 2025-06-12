@@ -45,9 +45,14 @@ class OrderController extends Controller
     public function showOrder(Request $request)
     {
         $menuId = $request->query('menu_id');
-        $menu = Menu::find($menuId);
-        $menus = Menu::all();
-
+        $menu = null;
+        $menus = collect();
+        if ($menuId) {
+            $menu = Menu::find($menuId);
+            if ($menu) {
+                $menus = collect([$menu]);
+            }
+        }
         return view('order', [
             'menu' => $menu,
             'menus' => $menus,
@@ -56,7 +61,8 @@ class OrderController extends Controller
 
     public function order()
     {
-        $menus = Menu::all();
+        // Default: tidak tampilkan menu apapun jika tidak dipilih dari menu
+        $menus = collect();
         return view('order', compact('menus'));
     }
 }

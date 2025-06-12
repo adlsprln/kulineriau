@@ -13,7 +13,7 @@
         }
         .welcome-bg {
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-                url('/images/home.png');
+                url('/images/home.jpeg');
             background-size: cover;
             background-position: center;
         }
@@ -53,14 +53,24 @@
     <section class="py-16 bg-white">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">Menu Populer</h2>
+            <!-- Gambar menu populer -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 @php
-                    // Ambil 3 menu dengan rating tertinggi (dummy jika belum ada tabel rating)
                     $favoriteMenus = \App\Models\Menu::orderByDesc('rating')->take(3)->get();
                 @endphp
                 @foreach($favoriteMenus as $menu)
                 <div class="bg-white rounded-lg shadow hover:shadow-lg transition">
-                    <img src="{{ $menu->image_url ?? '/images/default.jpg' }}" alt="{{ $menu->name }}" class="rounded-t-lg w-full h-56 object-cover">
+                    @php
+                        $imagePath = $menu->image_url ? 'images/' . $menu->image_url : 'images/default.jpg';
+                        $imageExists = $menu->image_url && file_exists(public_path($imagePath));
+                    @endphp
+                    @if(strtolower($menu->name) === 'gonggong')
+                        <img src="/images/gonggong.jpeg" alt="Gonggong" class="rounded-t-lg w-full h-56 object-cover">
+                    @elseif($imageExists)
+                        <img src="/{{ $imagePath }}" alt="{{ $menu->name }}" class="rounded-t-lg w-full h-56 object-cover">
+                    @else
+                        <img src="/images/default.jpg" alt="Default" class="rounded-t-lg w-full h-56 object-cover">
+                    @endif
                     <div class="p-5">
                         <h3 class="text-xl font-semibold mb-2">{{ $menu->name }}</h3>
                         <p class="text-gray-600">{{ $menu->description }}</p>

@@ -47,16 +47,22 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($menus as $menu)
             <div class="bg-white rounded-lg shadow-lg p-6">
+                @php
+                    $imagePath = $menu->image_url ? 'images/' . $menu->image_url : 'images/default.jpg';
+                    $imageExists = $menu->image_url && file_exists(public_path($imagePath));
+                @endphp
                 @if(strtolower($menu->name) === 'gonggong')
                     <img src="/images/gonggong.jpeg" alt="Gonggong" class="w-full h-40 object-cover rounded-t-lg">
+                @elseif($imageExists)
+                    <img src="/{{ $imagePath }}" alt="{{ $menu->name }}" class="w-full h-40 object-cover rounded-t-lg">
                 @else
-                    <img src="{{ $menu->image_url }}" alt="{{ $menu->name }}" class="w-full h-40 object-cover rounded-t-lg">
+                    <img src="/images/default.jpg" alt="Default" class="w-full h-40 object-cover rounded-t-lg">
                 @endif
                 <div class="mt-4">
                     <h2 class="text-xl font-bold text-gray-800">{{ $menu->name }}</h2>
                     <p class="text-gray-600 mt-2">{{ $menu->description }}</p>
                     <p class="text-red-700 font-bold mt-4">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
-                    <form action="{{ route('order.store') }}" method="POST" class="mt-4">
+                    <form action="{{ route('order.store') }}" method="POST" class="mt-4 relative">
                         @csrf
                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                         <div class="mb-4">

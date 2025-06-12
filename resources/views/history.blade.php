@@ -11,12 +11,16 @@
         @forelse($orderHistory as $order)
             @php
                 $menu = \App\Models\Menu::find($order['menu_id']);
+                $imagePath = $menu->image_url ? 'images/' . $menu->image_url : 'images/default.jpg';
+                $imageExists = $menu->image_url && file_exists(public_path($imagePath));
             @endphp
             <div class="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center">
                 @if(strtolower($menu->name) === 'gonggong')
                     <img src="/images/gonggong.jpeg" alt="Gonggong" class="w-24 h-24 object-cover rounded-full mb-4 border-4 border-blue-200">
+                @elseif($imageExists)
+                    <img src="/{{ $imagePath }}" alt="{{ $menu->name }}" class="w-24 h-24 object-cover rounded-full mb-4 border-4 border-blue-200">
                 @else
-                    <img src="{{ $menu->image_url ? '/images/' . $menu->image_url : '/images/default.jpg' }}" alt="{{ $menu->name }}" class="w-24 h-24 object-cover rounded-full mb-4 border-4 border-blue-200">
+                    <img src="/images/default.jpg" alt="Default" class="w-24 h-24 object-cover rounded-full mb-4 border-4 border-blue-200">
                 @endif
                 <h2 class="text-xl font-bold text-blue-900 mt-2 mb-1">{{ $menu->name }}</h2>
                 <p class="text-gray-500 mb-2">{{ $menu->description }}</p>
@@ -44,9 +48,12 @@
                         <form action="{{ route('menu.rate', $menu->id) }}" method="POST" class="flex items-center gap-1 justify-center">
                             @csrf
                             <label class="mr-2 text-sm text-blue-900">Beri rating:</label>
+                            @php
+                                $currentRating = $menu->rating ?? 0;
+                            @endphp
                             @for($i = 1; $i <= 5; $i++)
                                 <button type="submit" name="rating" value="{{ $i }}" class="focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 {{ $i <= ($menu->rating ?? 0) ? 'text-yellow-400' : 'text-gray-300' }} hover:text-yellow-500 transition" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 {{ $currentRating > 0 && $i <= $currentRating ? 'text-yellow-400' : 'text-gray-300' }} hover:text-yellow-500 transition" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.382 2.453a1 1 0 00-.364 1.118l1.286 3.967c.3.921-.755 1.688-1.54 1.118l-3.382-2.453a1 1 0 00-1.176 0l-3.382 2.453c-.784.57-1.838-.197-1.54-1.118l1.286-3.967a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.381-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
                                     </svg>
                                 </button>

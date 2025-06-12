@@ -35,8 +35,18 @@ class MenuController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-        Menu::create($request->all());
+
+        $data = $request->only(['name', 'description', 'price']);
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time().'_'.$image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+            $data['image_url'] = $imageName;
+        }
+        Menu::create($data);
         return redirect()->route('menu.index')->with('success', 'Menu berhasil ditambahkan!');
     }
 
