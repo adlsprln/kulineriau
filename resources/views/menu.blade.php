@@ -52,10 +52,16 @@
                 @endphp
                 @forelse($filteredMenus as $menu)
                 <div class="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center">
+                    @php
+                        $imagePath = $menu->image_url ? 'images/' . $menu->image_url : 'images/default.jpg';
+                        $imageExists = $menu->image_url && file_exists(public_path($imagePath));
+                    @endphp
                     @if(strtolower($menu->name) === 'gonggong')
                         <img src="/images/gonggong.jpeg" alt="Gonggong" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
+                    @elseif($imageExists)
+                        <img src="/{{ $imagePath }}" alt="{{ $menu->name }}" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
                     @else
-                        <img src="{{ $menu->image_url ?? '/images/default.jpg' }}" alt="{{ $menu->name }}" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
+                        <img src="/images/default.jpg" alt="Default" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
                     @endif
                     <h2 class="text-xl font-bold text-blue-900 mt-2">{{ $menu->name }}</h2>
                     <p class="text-gray-500 mt-1 mb-2">{{ $menu->description }}</p>
