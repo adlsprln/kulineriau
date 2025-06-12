@@ -16,11 +16,11 @@
                 url('/images/home.jpeg');
             background-size: cover;
             background-position: center;
-        }
+        } 
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header/Navigation -->
+    <!-- Header -->
     <header class="hero-bg text-white relative">
         <nav class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="text-2xl font-bold">KulineRiau</div>
@@ -37,6 +37,8 @@
             </div>
         </nav>
     </header>
+
+    <!-- Hero Section -->
     <div class="welcome-bg">
         <div class="container mx-auto px-6 py-16 flex flex-col justify-center items-center min-h-[40vh] text-center">
             <div class="max-w-4xl mx-auto">
