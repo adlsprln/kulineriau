@@ -26,7 +26,7 @@ class CartController extends Controller
             $cart[$menu->id] = $quantity;
         }
         session(['cart' => $cart]);
-        return back()->with('success', 'Menu berhasil dimasukkan ke keranjang!');
+        return redirect()->route('cart.index')->with('success', 'Menu berhasil dimasukkan ke keranjang!');
     }
 
     public function remove(Request $request, Menu $menu)
