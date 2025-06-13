@@ -40,20 +40,26 @@ class CartController extends Controller
     public function checkout(Request $request)
     {
         $cart = session('cart', []);
-        if (empty($cart)) {
-            return back()->with('error', 'Keranjang kosong.');
+        $selectedMenus = $request->input('selected_menus', []);
+        $quantities = $request->input('quantities', []);
+        if (empty($cart) || empty($selectedMenus)) {
+            return back()->with('error', 'Pilih menu yang ingin dipesan.');
         }
         $user = Auth::user();
-        foreach ($cart as $menu_id => $qty) {
-            Order::create([
-                'user_id' => $user->id,
-                'menu_id' => $menu_id,
-                'quantity' => $qty,
-                'payment_method' => $request->input('payment_method', 'bank_transfer'),
-                'buyer_request' => $request->input('buyer_request', null),
-            ]);
+        foreach ($selectedMenus as $menu_id) {
+            if (isset($cart[$menu_id])) {
+                $qty = isset($quantities[$menu_id]) ? max(1, (int)$quantities[$menu_id]) : $cart[$menu_id];
+                Order::create([
+                    'user_id' => $user->id,
+                    'menu_id' => $menu_id,
+                    'quantity' => $qty,
+                    'payment_method' => $request->input('payment_method', 'bank_transfer'),
+                    'buyer_request' => $request->input('buyer_request', null),
+                ]);
+                unset($cart[$menu_id]);
+            }
         }
-        session()->forget('cart');
+        session(['cart' => $cart]);
         return redirect()->route('history')->with('success', 'Pesanan berhasil dibuat!');
     }
 }

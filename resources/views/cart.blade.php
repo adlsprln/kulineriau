@@ -15,13 +15,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($menus as $menu)
                     <div class="bg-white rounded-2xl shadow-xl p-6 flex flex-col items-center">
+                        <input type="checkbox" name="selected_menus[]" value="{{ $menu->id }}" id="menu_{{ $menu->id }}" class="mb-2 w-5 h-5 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                        <label for="menu_{{ $menu->id }}" class="sr-only">Pilih {{ $menu->name }}</label>
                         <img src="/images/{{ $menu->image_url ?? 'default.jpg' }}" alt="{{ $menu->name }}" class="w-24 h-24 object-cover rounded-full mb-4 border-4 border-blue-200">
                         <h2 class="text-xl font-bold text-blue-900 mt-2 mb-1">{{ $menu->name }}</h2>
                         <p class="text-gray-500 mb-2">{{ $menu->description }}</p>
                         <p class="text-red-700 font-bold text-lg mb-2">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
-                        <div class="mb-2 w-full">
+                        <div class="mb-2 w-full flex flex-col items-center">
                             <span class="block text-sm text-gray-600">Jumlah:</span>
-                            <span class="font-semibold text-blue-900">{{ $cart[$menu->id] }} pcs</span>
+                            <input type="number" name="quantities[{{ $menu->id }}]" value="{{ $cart[$menu->id] }}" min="1" class="w-20 text-center border border-gray-300 rounded px-2 py-1 font-semibold text-blue-900" />
                         </div>
                         <form action="{{ route('cart.remove', $menu->id) }}" method="POST" class="w-full mt-2">
                             @csrf
