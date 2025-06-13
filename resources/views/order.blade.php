@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KulineRiau - Order</title>
+    <title>KulineRiau - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -42,51 +42,9 @@
         </nav>
     </header>
     <div class="container mx-auto px-6 py-20 text-center">
-        <h1 class="text-4xl font-bold text-red-700 mb-8">Order Menu</h1>
-        <p class="text-lg text-gray-700 max-w-xl mx-auto mb-6">Silakan pilih menu yang ingin Anda pesan dan nikmati layanan terbaik dari kami.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($menus as $menu)
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                @php
-                    $imagePath = $menu->image_url ? 'images/' . $menu->image_url : 'images/default.jpg';
-                    $imageExists = $menu->image_url && file_exists(public_path($imagePath));
-                @endphp
-                @if(strtolower($menu->name) === 'gonggong')
-                    <img src="/images/gonggong.jpeg" alt="Gonggong" class="w-full h-40 object-cover rounded-t-lg">
-                @elseif($imageExists)
-                    <img src="/{{ $imagePath }}" alt="{{ $menu->name }}" class="w-full h-40 object-cover rounded-t-lg">
-                @else
-                    <img src="/images/default.jpg" alt="Default" class="w-full h-40 object-cover rounded-t-lg">
-                @endif
-                <div class="mt-4">
-                    <h2 class="text-xl font-bold text-gray-800">{{ $menu->name }}</h2>
-                    <p class="text-gray-600 mt-2">{{ $menu->description }}</p>
-                    <p class="text-red-700 font-bold mt-4">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
-                    <form action="{{ route('order.store') }}" method="POST" class="mt-4 relative">
-                        @csrf
-                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                        <div class="mb-4">
-                            <label for="quantity_{{ $menu->id }}" class="block text-left text-gray-700 font-bold mb-2">Jumlah:</label>
-                            <input type="number" name="quantity" id="quantity_{{ $menu->id }}" min="1" value="1" class="w-full border-gray-300 rounded-lg" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="payment_method" class="block text-left text-gray-700 font-bold mb-2">Metode Pembayaran:</label>
-                            <select name="payment_method" id="payment_method" class="w-full border-gray-300 rounded-lg">
-                                <option value="bank_transfer">Transfer Bank</option>
-                                <option value="credit_card">Kartu Kredit</option>
-                                <option value="e_wallet">E-Wallet</option>
-                            </select>
-                        </div>
-                        <div class="mb-4">
-                            <label for="buyer_request" class="block text-left text-gray-700 font-bold mb-2">Permintaan Pembeli:</label>
-                            <textarea name="buyer_request" id="buyer_request" rows="4" class="w-full border-gray-300 rounded-lg" placeholder="Contoh: Tanpa pedas, tambahan saus."></textarea>
-                        </div>
-                        <button type="submit" class="bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800 transition">Pesan</button>
-                    </form>
-                </div>
-            </div>
-            @endforeach
-        </div>
+        <h1 class="text-4xl font-bold text-red-700 mb-8">Selamat Datang di KulineRiau</h1>
+        <p class="text-lg text-gray-700 max-w-xl mx-auto mb-6">Nikmati cita rasa asli Riau dengan berbagai pilihan menu lezat kami.</p>
+        <a href="/menu" class="bg-red-700 text-white px-6 py-3 rounded-lg hover:bg-red-800 transition">Lihat Menu Kami</a>
     </div>
     <footer class="bg-blue-900 text-white py-8 mt-16">
         <div class="container mx-auto px-6 text-center">

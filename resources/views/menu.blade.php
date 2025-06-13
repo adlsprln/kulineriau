@@ -24,9 +24,9 @@
                 <a href="/" class="hover:text-yellow-300 transition-colors">Home</a>
                 <a href="/menu" class="hover:text-yellow-300 transition-colors">Menu</a>
                 <a href="/tentangkami" class="hover:text-yellow-300 transition-colors">Tentang Kami</a>
-                <a href="/order" class="hover:text-yellow-300 transition-colors">Order</a>
                 <a href="/contact" class="hover:text-yellow-300 transition-colors">Kontak</a>
                 <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
+                <a href="/cart" class="hover:text-yellow-300 transition-colors font-bold">Keranjang</a>
             </div>
             <div>
                 <a href="/login" class="bg-white text-blue-900 font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-blue-900 transition">Login</a>
@@ -66,9 +66,10 @@
                     <h2 class="text-xl font-bold text-blue-900 mt-2">{{ $menu->name }}</h2>
                     <p class="text-gray-500 mt-1 mb-2">{{ $menu->description }}</p>
                     <p class="text-red-700 font-bold text-lg mb-2">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
-                    <form action="{{ route('order') }}" method="GET" class="w-full">
+                    <form action="{{ route('cart.add', $menu->id) }}" method="POST">
+                        @csrf
                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                        <button type="submit" class="bg-yellow-300 text-blue-900 font-bold px-4 py-2 rounded-lg w-full hover:bg-yellow-400 transition">Beli Sekarang</button>
+                        <button type="submit" class="bg-yellow-300 text-blue-900 font-bold px-4 py-2 rounded-lg w-full hover:bg-yellow-400 transition">Masukkan Keranjang</button>
                     </form>
                 </div>
                 @empty

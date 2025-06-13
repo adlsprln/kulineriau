@@ -22,6 +22,7 @@
                 <a href="/order" class="hover:text-yellow-300 transition-colors">Order</a>
                 <a href="/contact" class="hover:text-yellow-300 transition-colors">Kontak</a>
                 <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
+                <a href="/cart" class="hover:text-yellow-300 transition-colors font-bold">Keranjang</a>
             </div>
             <div>
                 @if(Auth::check())
