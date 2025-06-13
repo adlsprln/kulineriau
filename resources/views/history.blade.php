@@ -1,16 +1,19 @@
 @extends('layouts.app')
 @section('title', 'Riwayat Pemesanan')
 @section('content')
+@php
+    use Illuminate\Support\Facades\Auth;
+    use App\Models\Order;
+    use App\Models\Menu;
+    $orders = Auth::check() ? Order::where('user_id', Auth::id())->latest()->get() : collect();
+@endphp
 <div class="container mx-auto px-6 py-20 text-center">
     <h1 class="text-4xl font-bold text-red-700 mb-8">Riwayat Pemesanan</h1>
     <p class="text-lg text-gray-700 max-w-xl mx-auto mb-6">Berikut adalah daftar pesanan Anda yang telah tercatat.</p>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @php
-            $orderHistory = session('order_history', []);
-        @endphp
-        @forelse($orderHistory as $order)
+        @forelse($orders as $order)
             @php
-                $menu = \App\Models\Menu::find($order['menu_id']);
+                $menu = $order->menu;
                 $imagePath = $menu->image_url ? 'images/' . $menu->image_url : 'images/default.jpg';
                 $imageExists = $menu->image_url && file_exists(public_path($imagePath));
             @endphp
@@ -28,21 +31,21 @@
                 <div class="flex flex-col items-center w-full">
                     <div class="mb-2 w-full">
                         <span class="block text-sm text-gray-600">Jumlah:</span>
-                        <span class="font-semibold text-blue-900">{{ $order['quantity'] ?? 1 }} pcs</span>
+                        <span class="font-semibold text-blue-900">{{ $order->quantity }} pcs</span>
                     </div>
                     <div class="mb-2 w-full">
                         <span class="block text-sm text-gray-600">Metode Pembayaran:</span>
-                        <span class="font-semibold text-blue-900">{{ $order['payment_method'] }}</span>
+                        <span class="font-semibold text-blue-900">{{ $order->payment_method }}</span>
                     </div>
-                    @if(!empty($order['buyer_request']))
+                    @if(!empty($order->buyer_request))
                         <div class="mb-2 w-full">
                             <span class="block text-sm text-gray-600">Catatan:</span>
-                            <span class="text-gray-800">{{ $order['buyer_request'] }}</span>
+                            <span class="text-gray-800">{{ $order->buyer_request }}</span>
                         </div>
                     @endif
                     <div class="w-full mb-2">
                         <span class="block text-sm text-gray-600">Tanggal:</span>
-                        <span class="text-gray-800">{{ \Carbon\Carbon::parse($order['created_at'])->format('d M Y H:i') }}</span>
+                        <span class="text-gray-800">{{ $order->created_at->format('d M Y H:i') }}</span>
                     </div>
                     <div class="w-full mt-2">
                         <form action="{{ route('menu.rate', $menu->id) }}" method="POST" class="flex items-center gap-1 justify-center">
