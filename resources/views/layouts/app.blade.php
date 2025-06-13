@@ -24,7 +24,12 @@
                 <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
                 <a href="/cart" class="hover:text-yellow-300 transition-colors font-bold">Keranjang</a>
             </div>
-            <div>
+            <div class="flex items-center space-x-4">
+                <a href="/cart" class="relative group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-yellow-300 group-hover:text-white transition">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437m2.36 8.548l.882 3.527A2.25 2.25 0 0010.178 19.5h3.643a2.25 2.25 0 002.2-1.69l2.112-8.447a1.125 1.125 0 00-1.088-1.413H6.272m0 0L5.25 6.75m1.022 3.75h12.128" />
+                    </svg>
+                </a>
                 @if(Auth::check())
                     <span class="mr-4">Halo, {{ Auth::user()->name }}</span>
                     <form action="{{ route('logout') }}" method="POST" class="inline">
