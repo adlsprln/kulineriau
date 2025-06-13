@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -16,19 +18,16 @@ class OrderController extends Controller
             'buyer_request' => 'nullable|string',
         ]);
 
-        // Logic for storing the order
-        $order = [
+        // Simpan order ke database
+        $order = Order::create([
+            'user_id' => Auth::id(),
             'menu_id' => $validated['menu_id'],
             'quantity' => $validated['quantity'],
             'payment_method' => $validated['payment_method'],
-            'buyer_request' => $validated['buyer_request'],
-            'created_at' => now(),
-        ];
+            'buyer_request' => $validated['buyer_request'] ?? null,
+        ]);
 
-        // Simulate saving the order (replace with actual database logic)
-        session()->push('order_history', $order);
-
-        return redirect()->route('history');
+        return redirect()->route('history')->with('success', 'Pesanan berhasil disimpan!');
     }
 
     public function payment(Request $request)
