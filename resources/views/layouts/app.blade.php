@@ -19,7 +19,6 @@
                 <a href="/" class="hover:text-yellow-300 transition-colors">Home</a>
                 <a href="/menu" class="hover:text-yellow-300 transition-colors">Menu</a>
                 <a href="/tentangkami" class="hover:text-yellow-300 transition-colors">Tentang Kami</a>
-                <a href="/order" class="hover:text-yellow-300 transition-colors">Order</a>
                 <a href="/contact" class="hover:text-yellow-300 transition-colors">Kontak</a>
                 <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
             </div>
