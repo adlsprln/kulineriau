@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Menu;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('home');
@@ -33,7 +34,8 @@ Route::get('/tentangkami', function () {
 });
 Route::get('/contact', function () {
     return view('contact');
-});
+})->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/history', function () {
     return view('history');
 })->middleware('auth')->name('history');

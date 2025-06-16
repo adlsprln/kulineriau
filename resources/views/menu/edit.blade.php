@@ -10,7 +10,7 @@
         </ul>
     </div>
 @endif
-<form action="{{ route('menu.update', $menu) }}" method="POST" class="space-y-4">
+<form action="{{ route('menu.update', $menu) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
     @csrf
     @method('PUT')
     <div>
@@ -24,6 +24,13 @@
     <div>
         <label class="block">Harga</label>
         <input type="number" name="price" class="border rounded px-3 py-2 w-full" value="{{ old('price', $menu->price) }}" required>
+    </div>
+    <div>
+        <label class="block">Foto/Gambar Menu</label>
+        <input type="file" name="image" accept="image/*" class="border rounded px-3 py-2 w-full">
+        @if($menu->image_url)
+            <img src="/images/{{ $menu->image_url }}" alt="{{ $menu->name }}" class="w-24 h-24 mt-2 object-cover rounded">
+        @endif
     </div>
     <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Update</button>
     <a href="{{ route('menu.index') }}" class="ml-2 text-gray-600">Batal</a>
