@@ -64,4 +64,34 @@ class OrderController extends Controller
         $menus = collect();
         return view('order', compact('menus'));
     }
+
+    public function invoice(Order $order)
+    {
+        $order->load(['menu', 'user']);
+        // Hanya user yang memesan atau admin yang boleh akses
+        if (Auth::id() !== $order->user_id && !(Auth::check() && Auth::user()->isAdmin())) {
+            abort(403);
+        }
+        return view('invoice', compact('order'));
+    }
+
+    public function groupInvoice($checkout_code)
+    {
+        $orders = \App\Models\Order::with(['menu', 'user'])
+            ->where('checkout_code', $checkout_code)
+            ->orderBy('created_at')
+            ->get();
+        if ($orders->isEmpty()) {
+            abort(404);
+        }
+        // Hanya user pemilik atau admin yang boleh akses
+        $userId = $orders->first()->user_id;
+        if (auth()->id() !== $userId && !(auth()->check() && auth()->user()->isAdmin())) {
+            abort(403);
+        }
+        return view('invoice_group', [
+            'orders' => $orders,
+            'checkout_code' => $checkout_code
+        ]);
+    }
 }

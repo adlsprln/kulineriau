@@ -46,6 +46,7 @@ class CartController extends Controller
             return back()->with('error', 'Pilih menu yang ingin dipesan.');
         }
         $user = Auth::user();
+        $checkoutCode = 'INV' . now()->format('YmdHis') . $user->id . rand(100,999);
         foreach ($selectedMenus as $menu_id) {
             if (isset($cart[$menu_id])) {
                 $qty = isset($quantities[$menu_id]) ? max(1, (int)$quantities[$menu_id]) : $cart[$menu_id];
@@ -55,11 +56,12 @@ class CartController extends Controller
                     'quantity' => $qty,
                     'payment_method' => $request->input('payment_method', 'bank_transfer'),
                     'buyer_request' => $request->input('buyer_request', null),
+                    'checkout_code' => $checkoutCode,
                 ]);
                 unset($cart[$menu_id]);
             }
         }
         session(['cart' => $cart]);
-        return redirect()->route('history')->with('success', 'Pesanan berhasil dibuat!');
+        return redirect()->route('invoice.group', ['checkout_code' => $checkoutCode]);
     }
 }

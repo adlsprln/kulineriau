@@ -73,6 +73,8 @@ Route::post('/order/{menu_id}/delete', function ($menu_id) {
     session(['order_history' => $orderHistory]);
     return back()->with('success', 'Pesanan berhasil dihapus.');
 })->name('order.delete');
+Route::get('/order/{order}/invoice', [App\Http\Controllers\OrderController::class, 'invoice'])->name('order.invoice');
+Route::get('/invoice/{checkout_code}', [App\Http\Controllers\OrderController::class, 'groupInvoice'])->name('invoice.group');
 
 Route::get('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
