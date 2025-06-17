@@ -47,7 +47,7 @@
                     @endif
                     <div class="w-full mb-2">
                         <span class="block text-sm text-gray-600">Tanggal:</span>
-                        <span class="text-gray-800">{{ $order->created_at->format('d M Y H:i') }}</span>
+                        <span class="text-gray-800">{{ $order->created_at->format('d M Y') }}</span>
                     </div>
                     @if(Auth::check() && Auth::user()->isAdmin())
                         <div class="mb-2 w-full">

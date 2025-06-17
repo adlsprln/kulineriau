@@ -58,11 +58,7 @@
                                 @php
                                     $imagePath = $menu->image_url ? '/images/' . $menu->image_url : '/images/default.jpg';
                                 @endphp
-                                @if(strtolower($menu->name) === 'gonggong')
-                                    <img src="/images/gonggong.jpeg" alt="Gonggong" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
-                                @else
-                                    <img src="{{ $imagePath }}" alt="{{ $menu->name }}" class="w-32 h-32 object-cover rounded-full mb-4 border-4 border-blue-200">
-                                @endif
+                                <img src="{{ $imagePath }}" alt="{{ $menu->name }}" class="w-44 h-44 object-cover rounded-full mb-4 border-4 border-blue-200">
                                 <h3 class="text-xl font-bold text-blue-900 mt-2 mb-1 text-center">{{ $menu->name }}</h3>
                                 <p class="text-gray-500 mt-1 mb-2 text-center">{{ $menu->description }}</p>
                                 <p class="text-red-700 font-bold text-lg mb-2">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
