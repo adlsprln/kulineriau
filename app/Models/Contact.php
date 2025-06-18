@@ -5,10 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class Contact extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'description', 'price', 'image_url', 'category'
+        'user_id', 'name', 'email', 'message'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

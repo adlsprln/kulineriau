@@ -19,11 +19,24 @@
                 <a href="/" class="hover:text-yellow-300 transition-colors">Home</a>
                 <a href="/menu" class="hover:text-yellow-300 transition-colors">Menu</a>
                 <a href="/tentangkami" class="hover:text-yellow-300 transition-colors">Tentang Kami</a>
-                <a href="/order" class="hover:text-yellow-300 transition-colors">Order</a>
                 <a href="/contact" class="hover:text-yellow-300 transition-colors">Kontak</a>
                 <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
             </div>
-            <div>
+            <div class="flex items-center space-x-4">
+                @if(!Auth::check() || (Auth::check() && !Auth::user()->isAdmin()))
+                    <a href="/cart" class="relative group">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-yellow-300 group-hover:text-white transition">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437m2.36 8.548l.882 3.527A2.25 2.25 0 0010.178 19.5h3.643a2.25 2.25 0 002.2-1.69l2.112-8.447a1.125 1.125 0 00-1.088-1.413H6.272m0 0L5.25 6.75m1.022 3.75h12.128" />
+                        </svg>
+                    </a>
+                @endif
+                @if(Auth::check() && !Auth::user()->isAdmin())
+                    <a href="/profile" class="relative group" title="Profil Saya">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-yellow-300 group-hover:text-white transition">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 19.5a7.5 7.5 0 0115 0v.75a.75.75 0 01-.75.75h-13.5a.75.75 0 01-.75-.75V19.5z" />
+                        </svg>
+                    </a>
+                @endif
                 @if(Auth::check())
                     <span class="mr-4">Halo, {{ Auth::user()->name }}</span>
                     <form action="{{ route('logout') }}" method="POST" class="inline">

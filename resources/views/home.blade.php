@@ -20,24 +20,9 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Header -->
-    <header class="hero-bg text-white relative">
-        <nav class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="text-2xl font-bold">KulineRiau</div>
-            <div class="hidden md:flex space-x-8">
-                <a href="/" class="hover:text-yellow-300 transition-colors">Home</a>
-                <a href="/menu" class="hover:text-yellow-300 transition-colors">Menu</a>
-                <a href="/tentangkami" class="hover:text-yellow-300 transition-colors">Tentang Kami</a>
-                <a href="/order" class="hover:text-yellow-300 transition-colors">Order</a>
-                <a href="/contact" class="hover:text-yellow-300 transition-colors">Kontak</a>
-                <a href="/history" class="hover:text-yellow-300 transition-colors">History</a>
-            </div>
-            <div>
-                <a href="/login" class="bg-white text-blue-900 font-semibold px-6 py-2 rounded-full hover:bg-yellow-300 hover:text-blue-900 transition">Login</a>
-            </div>
-        </nav>
-    </header>
-
+@extends('layouts.app')
+@section('title', 'Home')
+@section('content')
     <!-- Hero Section -->
     <div class="welcome-bg">
         <div class="container mx-auto px-6 py-16 flex flex-col justify-center items-center min-h-[40vh] text-center">
@@ -54,7 +39,7 @@
     <!-- Menu Andalan Section: Menu Terfavorit -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">Menu Populer</h2>
+            <h2 class="text-3xl font-bold text-center mb-10 text-gray-800">Menu Best Seller</h2>
             <!-- Gambar menu populer -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 @php
@@ -90,20 +75,6 @@
             </div>
         </div>
     </section>
-
-    <footer class="bg-blue-900 text-white py-8">
-        <div class="container mx-auto px-6 text-center">
-            <div class="mb-4">
-                <h3 class="text-2xl font-bold mb-2">KulineRiau</h3>
-                <p class="text-blue-200">Cita Rasa Asli Riau dalam Setiap Gigitan</p>
-            </div>
-            <div class="flex justify-center space-x-6 mb-4">
-                <a href="#" class="text-blue-200 hover:text-white transition-colors">Instagram</a>
-                <a href="#" class="text-blue-200 hover:text-white transition-colors">WhatsApp</a>
-                <a href="#" class="text-blue-200 hover:text-white transition-colors">Facebook</a>
-            </div>
-            <p class="text-blue-300 text-sm">&copy; 2024 KulineRiau. Semua hak dilindungi.</p>
-        </div>
-    </footer>
+@endsection
 </body>
 </html>

@@ -5,6 +5,8 @@ use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Menu;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return view('home');
@@ -19,20 +21,21 @@ Route::resource('menu', MenuController::class)->except(['index', 'show'])->middl
 
 Route::post('/menu/{menu}/rate', [App\Http\Controllers\MenuController::class, 'rate'])->name('menu.rate');
 
-Route::get('/order', function () {
-    $menus = Menu::all();
-    return view('order', compact('menus'));
-})->middleware('auth');
-Route::post('/order', [OrderController::class, 'store'])->name('order.store');
-Route::get('/payment', [OrderController::class, 'payment'])->name('payment.process');
-Route::get('/order', [OrderController::class, 'showOrder'])->middleware('auth')->name('order');
+// Route keranjang (cart)
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add/{menu}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/remove/{menu}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+});
 
 Route::get('/tentangkami', function () {
     return view('tentangkami');
 });
 Route::get('/contact', function () {
     return view('contact');
-});
+})->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/history', function () {
     return view('history');
 })->middleware('auth')->name('history');
@@ -70,6 +73,8 @@ Route::post('/order/{menu_id}/delete', function ($menu_id) {
     session(['order_history' => $orderHistory]);
     return back()->with('success', 'Pesanan berhasil dihapus.');
 })->name('order.delete');
+Route::get('/order/{order}/invoice', [App\Http\Controllers\OrderController::class, 'invoice'])->name('order.invoice');
+Route::get('/invoice/{checkout_code}', [App\Http\Controllers\OrderController::class, 'groupInvoice'])->name('invoice.group');
 
 Route::get('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
@@ -81,5 +86,10 @@ Route::get('/dashboard', function () {
     $menus = Menu::all();
     return view('dashboard', compact('menus'));
 })->middleware('auth');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+});
 
 require __DIR__.'/auth.php';

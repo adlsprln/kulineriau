@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -16,19 +18,16 @@ class OrderController extends Controller
             'buyer_request' => 'nullable|string',
         ]);
 
-        // Logic for storing the order
-        $order = [
+        // Simpan order ke database
+        $order = Order::create([
+            'user_id' => Auth::id(),
             'menu_id' => $validated['menu_id'],
             'quantity' => $validated['quantity'],
             'payment_method' => $validated['payment_method'],
-            'buyer_request' => $validated['buyer_request'],
-            'created_at' => now(),
-        ];
+            'buyer_request' => $validated['buyer_request'] ?? null,
+        ]);
 
-        // Simulate saving the order (replace with actual database logic)
-        session()->push('order_history', $order);
-
-        return redirect()->route('history');
+        return redirect()->route('history')->with('success', 'Pesanan berhasil disimpan!');
     }
 
     public function payment(Request $request)
@@ -64,5 +63,35 @@ class OrderController extends Controller
         // Default: tidak tampilkan menu apapun jika tidak dipilih dari menu
         $menus = collect();
         return view('order', compact('menus'));
+    }
+
+    public function invoice(Order $order)
+    {
+        $order->load(['menu', 'user']);
+        // Hanya user yang memesan atau admin yang boleh akses
+        if (Auth::id() !== $order->user_id && !(Auth::check() && Auth::user()->isAdmin())) {
+            abort(403);
+        }
+        return view('invoice', compact('order'));
+    }
+
+    public function groupInvoice($checkout_code)
+    {
+        $orders = \App\Models\Order::with(['menu', 'user'])
+            ->where('checkout_code', $checkout_code)
+            ->orderBy('created_at')
+            ->get();
+        if ($orders->isEmpty()) {
+            abort(404);
+        }
+        // Hanya user pemilik atau admin yang boleh akses
+        $userId = $orders->first()->user_id;
+        if (auth()->id() !== $userId && !(auth()->check() && auth()->user()->isAdmin())) {
+            abort(403);
+        }
+        return view('invoice_group', [
+            'orders' => $orders,
+            'checkout_code' => $checkout_code
+        ]);
     }
 }
