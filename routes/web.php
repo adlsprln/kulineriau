@@ -87,4 +87,9 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('menus'));
 })->middleware('auth');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+});
+
 require __DIR__.'/auth.php';

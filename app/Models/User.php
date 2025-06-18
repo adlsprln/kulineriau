@@ -22,6 +22,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role', // tambahkan role agar bisa diisi massal
+        'address',
+        'gender',
+        'phone',
+        'city',
+        'postal_code'
     ];
 
     /**
