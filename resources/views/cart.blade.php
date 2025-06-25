@@ -51,6 +51,9 @@
                 <button type="submit" class="bg-green-600 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-green-700 transition w-full md:w-auto">Checkout</button>
             </div>
         </div>
+        <div class="flex justify-end max-w-3xl mx-auto mb-6">
+            <a href="{{ route('menu.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow transition">+ Tambah Menu</a>
+        </div>
         <div class="mt-8 max-w-3xl mx-auto bg-white rounded-xl shadow p-6">
             <h3 class="text-xl font-bold mb-4 text-blue-900">Detail Pengiriman</h3>
             <div class="mb-4">
