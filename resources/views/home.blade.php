@@ -49,12 +49,11 @@
                 <div class="bg-white rounded-lg shadow hover:shadow-lg transition">
                     @php
                         $imagePath = $menu->image_url ? 'images/' . $menu->image_url : 'images/default.jpg';
-                        $imageExists = $menu->image_url && file_exists(public_path($imagePath));
                     @endphp
                     @if(strtolower($menu->name) === 'gonggong')
                         <img src="/images/gonggong.jpeg" alt="Gonggong" class="rounded-t-lg w-full h-56 object-cover">
-                    @elseif($imageExists)
-                        <img src="/{{ $imagePath }}" alt="{{ $menu->name }}" class="rounded-t-lg w-full h-56 object-cover">
+                    @elseif($menu->image_url)
+                        <img src="/images/{{ $menu->image_url }}" alt="{{ $menu->name }}" class="rounded-t-lg w-full h-56 object-cover">
                     @else
                         <img src="/images/default.jpg" alt="Default" class="rounded-t-lg w-full h-56 object-cover">
                     @endif

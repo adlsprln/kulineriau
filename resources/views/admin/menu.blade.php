@@ -29,10 +29,13 @@
                 
                 {{-- Gambar Menu --}}
                 @if($menu->image_url)
-                    <img src="{{ asset('images/' . $menu->image_url) }}" alt="{{ $menu->name }}"
-                         class="w-full h-48 object-cover">
+                    <div class="relative w-full h-48 overflow-hidden group">
+                        <img src="{{ asset('images/' . $menu->image_url) }}" alt="{{ $menu->name }}"
+                             class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:brightness-90 rounded-t-xl shadow-md border-b-4 border-red-200">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                    </div>
                 @else
-                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-400">
+                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-400 rounded-t-xl">
                         Tidak ada gambar
                     </div>
                 @endif

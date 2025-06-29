@@ -47,10 +47,10 @@
         </div>
         {{-- Deskripsi --}}
  <div class="mb-4">
-    <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
-    <textarea name="deskripsi" id="deskripsi" rows="3" required
-        class="mt-1 block w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">{{ old('deskripsi') }}</textarea>
-    @error('deskripsi')
+    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+    <textarea name="description" id="description" rows="3" required
+        class="mt-1 block w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">{{ old('description') }}</textarea>
+    @error('description')
         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
     @enderror
 </div>

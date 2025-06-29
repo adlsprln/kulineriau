@@ -68,14 +68,7 @@
                 <label class="block text-left text-gray-700 font-bold mb-2">No. Telepon Penerima</label>
                 <input type="text" name="shipping_phone" value="{{ auth()->user()->phone ?? '' }}" class="w-full border-gray-300 rounded-lg px-3 py-2 bg-gray-100" readonly>
             </div>
-            <div class="mb-4">
-                <label class="block text-left text-gray-700 font-bold mb-2">Kota</label>
-                <input type="text" name="shipping_city" value="{{ auth()->user()->city ?? '' }}" class="w-full border-gray-300 rounded-lg px-3 py-2 bg-gray-100" readonly>
-            </div>
-            <div class="mb-4">
-                <label class="block text-left text-gray-700 font-bold mb-2">Kode Pos</label>
-                <input type="text" name="shipping_postal_code" value="{{ auth()->user()->postal_code ?? '' }}" class="w-full border-gray-300 rounded-lg px-3 py-2 bg-gray-100" readonly>
-            </div>
+           
             <a href="/profile" class="text-blue-700 underline text-sm">Ubah alamat di profil</a>
             <h3 class="text-xl font-bold mb-4 text-blue-900 mt-8">Catatan/Permintaan Pembeli</h3>
             <div class="mb-4">
