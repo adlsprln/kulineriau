@@ -30,10 +30,10 @@
             </div>
             @php
                 $categories = [
-                    'sangat_populer' => 'Sangat Populer (Ikonik & Sering Dicari)',
-                    'cukup_populer' => 'Cukup Populer (Khas tapi Tidak Selalu Ada)',
-                    'jarang_dikenal' => 'Jarang Dikenal Wisatawan tapi Autentik',
-                    'minuman_khas' => 'Minuman Khas Kepulauan Riau',
+                    'Sangat Populer' => 'Sangat Populer (Ikonik & Sering Dicari)',
+                    'Cukup Populer' => 'Cukup Populer (Khas tapi Tidak Selalu Ada)',
+                    'Jarang Dikenal Wisatawan' => 'Jarang Dikenal Wisatawan tapi Autentik',
+                    'Minuman Khas Kepulauan Riau' => 'Minuman Khas Kepulauan Riau',
                 ];
 
                 $filteredMenus = $menus;

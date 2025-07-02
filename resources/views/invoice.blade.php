@@ -42,7 +42,15 @@
     </div>
     @endif
     <div class="text-center mt-8">
-        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-800 text-white px-6 py-2 rounded font-bold shadow print:hidden">Cetak Struk</button>
+        @if($order->payment_status === 'verified')
+            <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-800 text-white px-6 py-2 rounded font-bold shadow print:hidden">Cetak Struk</button>
+        @elseif($order->payment_proof)
+            <div class="text-yellow-600 font-semibold mb-2">Menunggu verifikasi pembayaran oleh admin...</div>
+            <a href="{{ route('home') }}" class="bg-gray-400 text-white px-6 py-2 rounded font-bold shadow">Kembali ke Beranda</a>
+        @else
+            <div class="text-red-600 font-semibold mb-2">Anda harus upload bukti pembayaran sebelum bisa cetak struk.</div>
+            <a href="{{ route('order.upload_payment', $order->id) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded font-bold shadow">Upload Bukti Pembayaran</a>
+        @endif
     </div>
 </div>
 @endsection

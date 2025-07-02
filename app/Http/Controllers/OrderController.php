@@ -94,4 +94,40 @@ class OrderController extends Controller
             'checkout_code' => $checkout_code
         ]);
     }
+
+    /**
+     * Tampilkan form upload bukti pembayaran
+     */
+    public function showUploadPaymentForm($orderId)
+    {
+        $order = Order::findOrFail($orderId);
+        // Hanya user pemilik order yang boleh akses
+        if (Auth::id() !== $order->user_id && !(Auth::check() && Auth::user()->isAdmin())) {
+            abort(403);
+        }
+        return view('order_upload_payment', compact('order'));
+    }
+
+    /**
+     * Proses upload bukti pembayaran
+     */
+    public function uploadPayment(Request $request, $orderId)
+    {
+        $order = Order::findOrFail($orderId);
+        if (Auth::id() !== $order->user_id && !(Auth::check() && Auth::user()->isAdmin())) {
+            abort(403);
+        }
+        $request->validate([
+            'payment_proof' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        if ($request->hasFile('payment_proof')) {
+            $image = $request->file('payment_proof');
+            $imageName = time().'_'.$image->getClientOriginalName();
+            $image->move(public_path('payment_proofs'), $imageName);
+            $order->payment_proof = $imageName;
+            $order->payment_status = 'pending'; // Atau status lain sesuai kebutuhan
+            $order->save();
+        }
+        return redirect()->route('history')->with('success', 'Bukti pembayaran berhasil diupload, menunggu verifikasi admin.');
+    }
 }

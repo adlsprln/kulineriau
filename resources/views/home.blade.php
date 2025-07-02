@@ -50,10 +50,8 @@
                     @php
                         $imagePath = $menu->image_url ? 'images/' . $menu->image_url : 'images/default.jpg';
                     @endphp
-                    @if(strtolower($menu->name) === 'gonggong')
-                        <img src="/images/gonggong.jpeg" alt="Gonggong" class="rounded-t-lg w-full h-56 object-cover">
-                    @elseif($menu->image_url)
-                        <img src="/images/{{ $menu->image_url }}" alt="{{ $menu->name }}" class="rounded-t-lg w-full h-56 object-cover">
+                    @if($menu->image_url)
+                        <img src="/{{ $imagePath }}" alt="{{ $menu->name }}" class="rounded-t-lg w-full h-56 object-cover">
                     @else
                         <img src="/images/default.jpg" alt="Default" class="rounded-t-lg w-full h-56 object-cover">
                     @endif

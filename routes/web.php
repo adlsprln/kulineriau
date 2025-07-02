@@ -71,6 +71,10 @@ Route::post('/order/{menu_id}/delete', fn($menu_id) => redirect()->route('order.
 Route::get('/order/{order}/invoice', [OrderController::class, 'invoice'])->name('order.invoice');
 Route::get('/invoice/{checkout_code}', [OrderController::class, 'groupInvoice'])->name('invoice.group');
 
+// Route upload bukti pembayaran
+Route::get('/order/{order}/upload-payment', [OrderController::class, 'showUploadPaymentForm'])->name('order.upload_payment');
+Route::post('/order/{order}/upload-payment', [OrderController::class, 'uploadPayment'])->name('order.upload_payment.post');
+
 Route::get('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('logout');

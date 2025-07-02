@@ -13,25 +13,36 @@
 
         <div>
             <label class="block font-medium text-gray-700">Nama Menu</label>
-            <input type="text" name="nama" value="{{ old('nama', $menu->nama ?? '') }}" class="w-full px-4 py-2 border rounded-xl" required>
+            <input type="text" name="name" value="{{ old('name', $menu->name ?? '') }}" class="w-full px-4 py-2 border rounded-xl" required>
         </div>
 
         <div>
             <label class="block font-medium text-gray-700">Harga</label>
-            <input type="number" name="harga" value="{{ old('harga', $menu->harga ?? '') }}" class="w-full px-4 py-2 border rounded-xl" required>
+            <input type="number" name="price" value="{{ old('price', $menu->price ?? '') }}" class="w-full px-4 py-2 border rounded-xl" required>
         </div>
 
         <div>
             <label class="block font-medium text-gray-700">Deskripsi</label>
-            <textarea name="deskripsi" class="w-full px-4 py-2 border rounded-xl" required>{{ old('deskripsi', $menu->deskripsi ?? '') }}</textarea>
+            <textarea name="description" class="w-full px-4 py-2 border rounded-xl" required>{{ old('description', $menu->description ?? '') }}</textarea>
         </div>
 
         <div>
             <label class="block font-medium text-gray-700">Gambar</label>
-            <input type="file" name="gambar" class="w-full px-4 py-2 border rounded-xl">
-            @if(isset($menu) && $menu->gambar)
-                <img src="{{ asset('storage/' . $menu->gambar) }}" class="w-24 mt-2 rounded-xl shadow">
+            <input type="file" name="image_url" class="w-full px-4 py-2 border rounded-xl">
+            @if(isset($menu) && $menu->image_url)
+                <img src="{{ asset('images/' . $menu->image_url) }}" class="w-24 mt-2 rounded-xl shadow">
             @endif
+        </div>
+
+        <div>
+            <label class="block font-medium text-gray-700">Kategori</label>
+            <select name="category" class="w-full px-4 py-2 border rounded-xl" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="Sangat Populer" {{ old('category', $menu->category ?? '') == 'Sangat Populer' ? 'selected' : '' }}>Sangat Populer</option>
+                <option value="Cukup Populer" {{ old('category', $menu->category ?? '') == 'Cukup Populer' ? 'selected' : '' }}>Cukup Populer</option>
+                <option value="Jarang Dikenal Wisatawan" {{ old('category', $menu->category ?? '') == 'Jarang Dikenal Wisatawan' ? 'selected' : '' }}>Jarang Dikenal Wisatawan</option>
+                <option value="Minuman Khas Kepulauan Riau" {{ old('category', $menu->category ?? '') == 'Minuman Khas Kepulauan Riau' ? 'selected' : '' }}>Minuman Khas Kepulauan Riau</option>
+            </select>
         </div>
 
         <div class="text-right">

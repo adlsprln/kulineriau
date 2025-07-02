@@ -83,6 +83,9 @@
                                                         @default -
                                                     @endswitch
                                                 </span>
+                                                @if($order->status === 'pending' && empty($order->payment_proof))
+                                                    <a href="{{ route('order.upload_payment', $order->id) }}" class="ml-2 inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs font-bold transition">Upload Bukti Pembayaran</a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -172,6 +175,9 @@
                                                         @default -
                                                     @endswitch
                                                 </span>
+                                                @if($order->status === 'pending' && empty($order->payment_proof))
+                                                    <a href="{{ route('order.upload_payment', $order->id) }}" class="ml-2 inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs font-bold transition">Upload Bukti Pembayaran</a>
+                                                @endif
                                             </td>
                                             <td class="px-4 py-2">
                                                 <form action="{{ route('menu.rate', $menu->id) }}" method="POST" class="flex items-center gap-1 justify-center">
