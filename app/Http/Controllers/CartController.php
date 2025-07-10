@@ -47,6 +47,8 @@ class CartController extends Controller
         }
         $user = Auth::user();
         $checkoutCode = 'INV' . now()->format('YmdHis') . $user->id . rand(100,999);
+        // Set payment_deadline 30 menit dari sekarang
+        $paymentDeadline = now()->addMinutes(30);
         foreach ($selectedMenus as $menu_id) {
             if (isset($cart[$menu_id])) {
                 $qty = isset($quantities[$menu_id]) ? max(1, (int)$quantities[$menu_id]) : $cart[$menu_id];
@@ -57,11 +59,17 @@ class CartController extends Controller
                     'payment_method' => $request->input('payment_method', 'bank_transfer'),
                     'buyer_request' => $request->input('buyer_request', null),
                     'checkout_code' => $checkoutCode,
+                    'payment_deadline' => $paymentDeadline,
                 ]);
                 unset($cart[$menu_id]);
             }
         }
         session(['cart' => $cart]);
-        return redirect()->route('invoice.group', ['checkout_code' => $checkoutCode]);
+        // Ambil order pertama dari group checkout_code
+        $firstOrder = Order::where('checkout_code', $checkoutCode)->first();
+        if ($firstOrder) {
+            return redirect()->route('order.upload_payment', $firstOrder->id);
+        }
+        return redirect()->route('history')->with('error', 'Terjadi kesalahan saat checkout.');
     }
 }

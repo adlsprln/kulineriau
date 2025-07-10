@@ -3,6 +3,11 @@
 @section('content')
 <div class="container mx-auto px-6 py-12">
     <h1 class="text-3xl font-bold text-blue-900 mb-8 text-center">Edit Profil</h1>
+    @if(session('success'))
+        <div class="mb-6 px-4 py-3 rounded bg-green-100 text-green-800 font-semibold border border-green-300 text-center">
+            {{ session('success') }}
+        </div>
+    @endif
     <form action="{{ route('profile.update') }}" method="POST" class="bg-white rounded-xl shadow p-6 max-w-lg mx-auto">
         @csrf
         @method('PUT')

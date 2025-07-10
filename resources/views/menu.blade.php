@@ -28,6 +28,11 @@
                     <button type="submit" class="ml-2 px-4 py-2 bg-yellow-300 text-blue-900 font-bold rounded-lg hover:bg-yellow-400 transition">Cari</button>
                 </form>
             </div>
+            <div class="mb-6">
+                <a href="{{ url()->previous() }}" class="inline-block bg-gray-200 hover:bg-gray-300 text-blue-900 font-bold px-6 py-2 rounded-lg shadow transition">
+                    ← Kembali
+                </a>
+            </div>
             @php
                 $categories = [
                     'Sangat Populer' => 'Sangat Populer (Ikonik & Sering Dicari)',
@@ -74,8 +79,21 @@
                     </div>
                 </section>
             @endforeach
+        </div><footer class="bg-blue-900 text-white py-8 mt-16">
+    <div class="container mx-auto px-6 text-center">
+        <div class="mb-4">
+            <h3 class="text-2xl font-bold mb-2">KulineRiau</h3>
+            <p class="text-blue-200">Cita Rasa Asli Riau dalam Setiap Gigitan</p>
         </div>
+        <div class="flex justify-center space-x-6 mb-4">
+            <a href="#" class="text-blue-200 hover:text-white transition-colors">Instagram</a>
+            <a href="#" class="text-blue-200 hover:text-white transition-colors">WhatsApp</a>
+            <a href="#" class="text-blue-200 hover:text-white transition-colors">Facebook</a>
+        </div>
+        <p class="text-blue-300 text-sm">&copy; 2024 KulineRiau. Semua hak dilindungi.</p>
     </div>
-    @endsection
+</footer>
+@endsection
+
 </body>
 </html>

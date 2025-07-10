@@ -25,9 +25,13 @@ class OrderStatusController extends Controller
             'status' => 'required|string',
         ]);
 
-        $order = Order::where('checkout_code', $checkout_code)->firstOrFail();
-        $order->status = $request->status;
-        $order->save();
+
+        // Update semua order dengan checkout_code yang sama
+        $orders = Order::where('checkout_code', $checkout_code)->get();
+        foreach ($orders as $order) {
+            $order->status = $request->status;
+            $order->save();
+        }
 
         return back()->with('success', 'Status pesanan berhasil diupdate.');
     }
