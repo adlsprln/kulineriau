@@ -22,7 +22,7 @@
                     $qty = $cart[$menu->id];
                 @endphp
                 <div class="flex items-center px-4 py-4 group">
-                    <input type="checkbox" name="selected_menus[]" value="{{ $menu->id }}" id="menu_{{ $menu->id }}" class="w-6 h-6 text-green-600 border-gray-300 rounded mr-3 select-item" data-id="{{ $menu->id }}">
+                    <input type="checkbox" name="selected_menus[]" value="{{ $menu->id }}" id="menu_{{ $menu->id }}" class="w-6 h-6 text-green-600 border-gray-300 rounded mr-3 select-item" data-id="{{ $menu->id }}" checked>
                     <img src="/images/{{ $menu->image_url ? $menu->image_url : 'default.jpg' }}" alt="{{ $menu->name }}" class="w-20 h-20 object-cover rounded-lg border-2 border-blue-200 mr-4">
                     <div class="flex-1 text-left">
                         <h2 class="text-lg font-bold text-blue-900 mb-1">{{ $menu->name }}</h2>
@@ -75,7 +75,7 @@
                 <label for="payment_method" class="block text-left text-gray-700 font-bold mb-2">Metode Pembayaran:</label>
                 <select name="payment_method" id="payment_method" class="w-full border-gray-300 rounded-lg">
                     <option value="bank_transfer">Transfer Bank</option>
-                    <option value="credit_card">Kartu Kredit</option>
+                    <option value="qris">QRIS</option>
                     <option value="e_wallet">E-Wallet</option>
                 </select>
             </div>
@@ -86,85 +86,109 @@
         </div>
     </form>
     <script>
-        // Select all logic
-        document.getElementById('selectAll').addEventListener('change', function() {
-            document.querySelectorAll('.select-item').forEach(cb => cb.checked = this.checked);
-            updateTotal();
-        });
-        document.querySelectorAll('.select-item').forEach(cb => {
-            cb.addEventListener('change', updateTotal);
-        });
-        // Increment/decrement logic
-        document.querySelectorAll('.decrement').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const input = document.querySelector('.quantity-input[data-id="'+id+'"]');
-                let val = parseInt(input.value);
-                if(val > 1) input.value = val - 1;
-                updateTotal();
-            });
-        });
-        document.querySelectorAll('.increment').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                const input = document.querySelector('.quantity-input[data-id="'+id+'"]');
-                let val = parseInt(input.value);
-                input.value = val + 1;
-                updateTotal();
-            });
-        });
-        document.querySelectorAll('.quantity-input').forEach(input => {
-            input.addEventListener('input', updateTotal);
-        });
-        function updateTotal() {
-            let total = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            // QRIS barcode show/hide logic
+            const paymentSelect = document.getElementById('payment_method');
+            const qrisContainer = document.getElementById('qris-barcode-container');
+            function toggleQrisBarcode() {
+                if(paymentSelect && qrisContainer) {
+                    if(paymentSelect.value === 'qris') {
+                        qrisContainer.style.display = '';
+                    } else {
+                        qrisContainer.style.display = 'none';
+                    }
+                }
+            }
+            if(paymentSelect) {
+                paymentSelect.addEventListener('change', toggleQrisBarcode);
+                toggleQrisBarcode();
+            }
+
+            // Select all logic
+            const selectAll = document.getElementById('selectAll');
+            if(selectAll) {
+                selectAll.addEventListener('change', function() {
+                    document.querySelectorAll('.select-item').forEach(cb => cb.checked = this.checked);
+                    updateTotal();
+                });
+            }
             document.querySelectorAll('.select-item').forEach(cb => {
-                if(cb.checked) {
-                    const id = cb.getAttribute('data-id');
-                    const harga = parseInt(document.querySelector('.harga-item[data-id="'+id+'"]').innerText.replace(/\D/g, ''));
-                    const qty = parseInt(document.querySelector('.quantity-input[data-id="'+id+'"]')?.value || 1);
-                    total += harga * qty;
-                }
+                cb.addEventListener('change', updateTotal);
             });
-            document.getElementById('totalHarga').innerText = 'Rp ' + total.toLocaleString('id-ID');
-        }
-        // Inisialisasi total awal
-        updateTotal();
-
-        // Validasi metode pembayaran dan item terpilih sebelum submit
-        const cartForm = document.getElementById('cartForm');
-        cartForm.addEventListener('submit', function(e) {
-            const payment = document.getElementById('payment_method').value;
-            const anyChecked = Array.from(document.querySelectorAll('.select-item')).some(cb => cb.checked);
-            if(!anyChecked) {
-                alert('Pilih minimal satu menu yang ingin dipesan!');
-                e.preventDefault();
-                return;
+            // Increment/decrement logic
+            document.querySelectorAll('.decrement').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const input = document.querySelector('.quantity-input[data-id="'+id+'"]');
+                    let val = parseInt(input.value);
+                    if(val > 1) input.value = val - 1;
+                    updateTotal();
+                });
+            });
+            document.querySelectorAll('.increment').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const input = document.querySelector('.quantity-input[data-id="'+id+'"]');
+                    let val = parseInt(input.value);
+                    input.value = val + 1;
+                    updateTotal();
+                });
+            });
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('input', updateTotal);
+            });
+            function updateTotal() {
+                let total = 0;
+                document.querySelectorAll('.select-item').forEach(cb => {
+                    if(cb.checked) {
+                        const id = cb.getAttribute('data-id');
+                        const harga = parseInt(document.querySelector('.harga-item[data-id="'+id+'"]').innerText.replace(/\D/g, ''));
+                        const qty = parseInt(document.querySelector('.quantity-input[data-id="'+id+'"]')?.value || 1);
+                        total += harga * qty;
+                    }
+                });
+                document.getElementById('totalHarga').innerText = 'Rp ' + total.toLocaleString('id-ID');
             }
-            if(!payment) {
-                alert('Silakan pilih metode pembayaran terlebih dahulu!');
-                document.getElementById('payment_method').focus();
-                document.getElementById('payment_method').scrollIntoView({behavior: 'smooth', block: 'center'});
-                e.preventDefault();
-            }
-        });
+            // Inisialisasi total awal
+            updateTotal();
 
-        // Hapus item dari keranjang tanpa nested form
-        document.querySelectorAll('.btn-remove').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                if(confirm('Yakin ingin menghapus item ini dari keranjang?')) {
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '/cart/remove/' + id;
-                    const csrf = document.createElement('input');
-                    csrf.type = 'hidden';
-                    csrf.name = '_token';
-                    csrf.value = '{{ csrf_token() }}';
-                    form.appendChild(csrf);
-                    document.body.appendChild(form);
-                    form.submit();
-                }
+            // Validasi metode pembayaran dan item terpilih sebelum submit
+            const cartForm = document.getElementById('cartForm');
+            if(cartForm) {
+                cartForm.addEventListener('submit', function(e) {
+                    const payment = document.getElementById('payment_method').value;
+                    const anyChecked = Array.from(document.querySelectorAll('.select-item')).some(cb => cb.checked);
+                    if(!anyChecked) {
+                        alert('Pilih minimal satu menu yang ingin dipesan!');
+                        e.preventDefault();
+                        return;
+                    }
+                    if(!payment) {
+                        alert('Silakan pilih metode pembayaran terlebih dahulu!');
+                        document.getElementById('payment_method').focus();
+                        document.getElementById('payment_method').scrollIntoView({behavior: 'smooth', block: 'center'});
+                        e.preventDefault();
+                    }
+                });
+            }
+
+            // Hapus item dari keranjang tanpa nested form
+            document.querySelectorAll('.btn-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    if(confirm('Yakin ingin menghapus item ini dari keranjang?')) {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '/cart/remove/' + id;
+                        const csrf = document.createElement('input');
+                        csrf.type = 'hidden';
+                        csrf.name = '_token';
+                        csrf.value = '{{ csrf_token() }}';
+                        form.appendChild(csrf);
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
             });
         });
     </script>

@@ -105,6 +105,16 @@ class OrderController extends Controller
         if (Auth::id() !== $order->user_id && !(Auth::check() && Auth::user()->isAdmin())) {
             abort(403);
         }
+        // Jika waktu sudah lewat dan belum upload bukti, batalkan otomatis
+        if ($order->status === 'pending' && $order->payment_deadline && now()->greaterThan($order->payment_deadline) && empty($order->payment_proof)) {
+            // Update semua order dengan checkout_code yang sama
+            $orders = \App\Models\Order::where('checkout_code', $order->checkout_code)->get();
+            foreach ($orders as $o) {
+                $o->status = 'Dibatalkan';
+                $o->save();
+            }
+            $order->refresh();
+        }
         return view('order_upload_payment', compact('order'));
     }
 
@@ -125,9 +135,30 @@ class OrderController extends Controller
             $imageName = time().'_'.$image->getClientOriginalName();
             $image->move(public_path('payment_proofs'), $imageName);
             $order->payment_proof = $imageName;
-            $order->payment_status = 'pending'; // Atau status lain sesuai kebutuhan
+            $order->payment_status = 'pending';
+            $order->status = 'Diproses'; // Ubah status order menjadi Diproses setelah upload bukti
             $order->save();
+
+            // Update semua order dengan checkout_code yang sama
+            $orders = \App\Models\Order::where('checkout_code', $order->checkout_code)->get();
+            foreach ($orders as $o) {
+                $o->payment_status = 'pending';
+                $o->status = 'Diproses';
+                $o->save();
+            }
         }
         return redirect()->route('history')->with('success', 'Bukti pembayaran berhasil diupload, menunggu verifikasi admin.');
+    }
+
+    public function print($checkout_code)
+    {
+        $orders = \App\Models\Order::with(['menu', 'user'])
+            ->where('checkout_code', $checkout_code)
+            ->get();
+        if ($orders->isEmpty()) {
+            abort(404);
+        }
+        $firstOrder = $orders->first();
+        return view('print_struk', compact('orders', 'firstOrder', 'checkout_code'));
     }
 }

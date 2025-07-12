@@ -74,6 +74,7 @@ Route::get('/invoice/{checkout_code}', [OrderController::class, 'groupInvoice'])
 // Route upload bukti pembayaran
 Route::get('/order/{order}/upload-payment', [OrderController::class, 'showUploadPaymentForm'])->name('order.upload_payment');
 Route::post('/order/{order}/upload-payment', [OrderController::class, 'uploadPayment'])->name('order.upload_payment.post');
+Route::get('/order/print/{checkout_code}', [OrderController::class, 'print'])->name('order.print');
 
 Route::get('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store']);

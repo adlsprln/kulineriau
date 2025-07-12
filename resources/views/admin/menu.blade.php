@@ -6,6 +6,13 @@
 <div class="container mx-auto px-6 py-10">
     <h2 class="text-3xl font-bold text-red-700 mb-6">Kelola Menu</h2>
 
+    {{-- Tombol Kembali ke Dashboard --}}
+    <div class="mb-6">
+        <a href="{{ route('admin.dashboard') }}" class="inline-block bg-gray-200 hover:bg-gray-300 text-blue-900 font-bold px-6 py-2 rounded-lg shadow transition">
+            ← Kembali ke Dashboard
+        </a>
+    </div>
+
     {{-- Tombol Tambah + Form Cari --}}
     <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
         <a href="{{ route('admin.menu.create') }}" class="px-5 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition">

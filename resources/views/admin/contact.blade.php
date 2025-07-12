@@ -2,6 +2,11 @@
 @section('title', 'Kontak User')
 @section('content')
 <div class="container mx-auto px-6 py-12">
+    <div class="mb-6">
+        <a href="{{ route('admin.dashboard') }}" class="inline-block bg-gray-200 hover:bg-gray-300 text-blue-900 font-bold px-6 py-2 rounded-lg shadow transition">
+            ← Kembali ke Dashboard
+        </a>
+    </div>
     <h1 class="text-3xl font-bold text-blue-900 mb-8">Pesan dari User</h1>
     <div class="overflow-x-auto bg-white rounded-xl shadow p-6">
         <table class="min-w-full border border-blue-200">

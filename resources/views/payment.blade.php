@@ -22,8 +22,50 @@
                     <label for="payment_method" class="block text-left text-gray-700 font-bold mb-2">Metode Pembayaran:</label>
                     <select name="payment_method" id="payment_method" class="w-full border-gray-300 rounded-lg">
                         <option value="bank_transfer">Transfer Bank</option>
-                        <option value="credit_card">Kartu Kredit</option>
+                        <option value="qris">QRIS</option>
                         <option value="e_wallet">E-Wallet</option>
+                    </select>
+                    <div id="bank-options-container" class="mb-4" style="display:none;">
+                        <label for="bank_option" class="block text-left text-gray-700 font-bold mb-2">Pilih Bank:</label>
+                        <select id="bank_option" name="bank_option" class="w-full border-gray-300 rounded-lg mb-2">
+                            <option value="bca">BCA</option>
+                            <option value="bni">BNI</option>
+                            <option value="bri">BRI</option>
+                            <option value="mandiri">Mandiri</option>
+                        </select>
+                        <div id="rekening-info" class="text-blue-900 font-bold text-lg bg-blue-50 rounded p-2">
+                            <span id="rekening-label">No. Rekening: </span>
+                            <span id="rekening-value">1234567890 (BCA)</span>
+                        </div>
+                    </div>
+        // Bank transfer show/hide logic
+        const bankOptions = {
+            bca: { rekening: '1234567890', label: 'BCA' },
+            bni: { rekening: '9876543210', label: 'BNI' },
+            bri: { rekening: '1122334455', label: 'BRI' },
+            mandiri: { rekening: '5566778899', label: 'Mandiri' }
+        };
+        const bankOptionsContainer = document.getElementById('bank-options-container');
+        const bankOptionSelect = document.getElementById('bank_option');
+        const rekeningValue = document.getElementById('rekening-value');
+        function toggleBankOptions() {
+            if(paymentSelect.value === 'bank_transfer') {
+                bankOptionsContainer.style.display = '';
+                updateRekening();
+            } else {
+                bankOptionsContainer.style.display = 'none';
+            }
+        }
+        function updateRekening() {
+            const val = bankOptionSelect.value;
+            rekeningValue.textContent = bankOptions[val].rekening + ' (' + bankOptions[val].label + ')';
+        }
+        if(bankOptionSelect) {
+            bankOptionSelect.addEventListener('change', updateRekening);
+        }
+        paymentSelect.addEventListener('change', toggleBankOptions);
+        // Inisialisasi saat load
+        toggleBankOptions();
                     </select>
                 </div>
                 <div class="mb-4">
