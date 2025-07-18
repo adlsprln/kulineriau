@@ -131,17 +131,10 @@ class OrderController extends Controller
             'payment_proof' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         if ($request->hasFile('payment_proof')) {
-            $image = $request->file('payment_proof');
-            $imageName = time().'_'.$image->getClientOriginalName();
-            $image->move(public_path('payment_proofs'), $imageName);
-            $order->payment_proof = $imageName;
-            $order->payment_status = 'pending';
-            $order->status = 'Diproses'; // Ubah status order menjadi Diproses setelah upload bukti
-            $order->save();
-
-            // Update semua order dengan checkout_code yang sama
+            $imagePath = $request->file('payment_proof')->store('payment_proofs', 'public');
             $orders = \App\Models\Order::where('checkout_code', $order->checkout_code)->get();
             foreach ($orders as $o) {
+                $o->payment_proof = basename($imagePath);
                 $o->payment_status = 'pending';
                 $o->status = 'Diproses';
                 $o->save();

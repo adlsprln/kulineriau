@@ -87,7 +87,11 @@
                                                         @default {{ $order->status }}
                                                     @endswitch
                                                 </span>
-                                                @if($order->status === 'pending' && empty($order->payment_proof))
+                                                @if($order->payment_proof)
+                                                    <div class="mt-2">
+                                                        <img src="{{ asset('storage/payment_proofs/' . $order->payment_proof) }}" alt="Bukti Pembayaran" style="max-width:100px; max-height:100px; border-radius:8px; border:1px solid #cbd5e1;">
+                                                    </div>
+                                                @elseif($order->status === 'pending')
                                                     <a href="{{ route('order.upload_payment', $order->id) }}" class="ml-2 inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs font-bold transition">Upload Bukti Pembayaran</a>
                                                 @endif
                                             </td>
@@ -151,7 +155,7 @@
                                         <th class="px-4 py-2 text-left">Metode</th>
                                         <th class="px-4 py-2 text-left">Catatan</th>
                                         <th class="px-4 py-2 text-left">Status</th>
-                                        <th class="px-4 py-2 text-left">Rating</th>
+                                        <th class="px-4 py-2 text-left">Rating & Struk</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -167,61 +171,63 @@
                                             <td class="px-4 py-2 text-blue-900">{{ $order->quantity }} pcs</td>
                                             @if($orderIndex === 0)
                                                 <td class="px-4 py-2 text-blue-900 text-center align-middle" rowspan="{{ $group->count() }}">{{ $order->payment_method }}</td>
+                                                <td class="px-4 py-2 text-gray-700 text-xs italic text-center align-middle" rowspan="{{ $group->count() }}">{{ $order->buyer_request ?? '-' }}</td>
+                                                <td class="px-4 py-2 text-blue-900 text-center align-middle" rowspan="{{ $group->count() }}">
+                                                    <span class="font-semibold">
+                                                        @php $status = $group->first()->status; @endphp
+                                                        @switch($status)
+                                                            @case('pending') Menunggu Pembayaran @break
+                                                            @case('Diproses') Diproses @break
+                                                            @case('Dikirim') Dikirim @break
+                                                            @case('Selesai') Selesai @break
+                                                            @case('Dibatalkan') Dibatalkan @break
+                                                            @case('proses') Proses Pemesanan @break
+                                                            @case('dikirim') Dikirim @break
+                                                            @case('selesai') Selesai @break
+                                                            @default {{ $status }}
+                                                        @endswitch
+                                                    </span>
+                                                    @if($order->status === 'pending' && empty($order->payment_proof))
+                                                        <a href="{{ route('order.upload_payment', $order->id) }}" class="ml-2 inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs font-bold transition">Upload Bukti Pembayaran</a>
+                                                    @endif
+                                                </td>
                                             @endif
-                                            <td class="px-4 py-2 text-gray-700 text-xs italic">{{ $order->buyer_request ?? '-' }}</td>
-                                            <td class="px-4 py-2 text-blue-900">
-                                                <span class="font-semibold">
-                                                    @php
-                                                        $status = $group->first()->status;
-                                                    @endphp
-                                                    @switch($status)
-                                                        @case('pending') Menunggu Pembayaran @break
-                                                        @case('Diproses') Diproses @break
-                                                        @case('Dikirim') Dikirim @break
-                                                        @case('Selesai') Selesai @break
-                                                        @case('Dibatalkan') Dibatalkan @break
-                                                        @case('proses') Proses Pemesanan @break
-                                                        @case('dikirim') Dikirim @break
-                                                        @case('selesai') Selesai @break
-                                                        @default {{ $status }}
-                                                    @endswitch
-                                                </span>
-                                                @if($order->status === 'pending' && empty($order->payment_proof))
-                                                    <a href="{{ route('order.upload_payment', $order->id) }}" class="ml-2 inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs font-bold transition">Upload Bukti Pembayaran</a>
-                                                @endif
-                                            </td>
-                                            <td class="px-4 py-2 flex items-center gap-2 justify-center">
-                                                @if($group->first()->status === 'Selesai' || $group->first()->status === 'selesai')
-                                                    <form action="{{ route('menu.rate', $menu->id) }}" method="POST" class="flex items-center gap-1">
-                                                        @csrf
-                                                        @php $currentRating = $menu->rating ?? 0; @endphp
-                                                        @for($i = 1; $i <= 5; $i++)
+                                            <td class="px-4 py-2 text-center align-middle">
+                                                @php $currentRating = $order->menu->rating ?? 0; @endphp
+                                                <form action="{{ route('menu.rate', $order->menu->id) }}" method="POST" class="flex items-center gap-1 justify-center mb-1">
+                                                    @csrf
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        @if($group->first()->status === 'Selesai' || $group->first()->status === 'selesai')
                                                             <button type="submit" name="rating" value="{{ $i }}" class="focus:outline-none">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    class="h-6 w-6 {{ $currentRating > 0 ? ($i <= $currentRating ? 'text-yellow-400' : 'text-gray-300') : 'text-gray-300' }} hover:text-yellow-500 transition"
+                                                                    class="h-6 w-6 my-1 {{ $currentRating > 0 ? ($i <= $currentRating ? 'text-yellow-400' : 'text-gray-300') : 'text-gray-300' }} hover:text-yellow-500 transition"
                                                                     fill="currentColor" viewBox="0 0 20 20">
                                                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.382 2.453a1 1 0 00-.364 1.118l1.286 3.967c.3.921-.755 1.688-1.54 1.118l-3.382-2.453a1 1 0 00-1.176 0l-3.382 2.453c-.784.57-1.838-.197-1.54-1.118l1.286-3.967a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.381-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
                                                                 </svg>
                                                             </button>
-                                                        @endfor
-                                                    </form>
-                                                @else
-                                                    @php $currentRating = $menu->rating ?? 0; @endphp
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="h-6 w-6 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.382 2.453a1 1 0 00-.364 1.118l1.286 3.967c.3.921-.755 1.688-1.54 1.118l-3.382-2.453a1 1 0 00-1.176 0l-3.382 2.453c-.784.57-1.838-.197-1.54-1.118l1.286-3.967a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.381-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
-                                                        </svg>
+                                                        @else
+                                                            <span>
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="h-6 w-6 my-1 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.382 2.453a1 1 0 00-.364 1.118l1.286 3.967c.3.921-.755 1.688-1.54 1.118l-3.382-2.453a1 1 0 00-1.176 0l-3.382 2.453c-.784.57-1.838-.197-1.54-1.118l1.286-3.967a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.381-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
+                                                                </svg>
+                                                            </span>
+                                                        @endif
                                                     @endfor
-                                                @endif
-                                                @if($group->first()->status === 'Selesai' || $group->first()->status === 'selesai')
-                                                    <a href="{{ route('order.print', $checkout_code) }}" target="_blank" class="ml-3 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-xs font-bold shadow">Cetak Struk</a>
-                                                @endif
+                                                    <span class="ml-2 text-xs text-blue-900">{{ $order->menu->name }}</span>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="w-full flex justify-end mt-2">
+                            @if($group->first()->status === 'Selesai' || $group->first()->status === 'selesai')
+                                <a href="{{ route('order.print', $checkout_code) }}" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-xs font-bold shadow">Cetak Struk</a>
+                            @else
+                                <button class="bg-gray-400 text-white px-4 py-2 rounded text-xs font-bold shadow cursor-not-allowed" disabled>Cetak Struk</button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -234,15 +240,15 @@
 <footer class="bg-blue-900 text-white py-8 mt-16">
     <div class="container mx-auto px-6 text-center">
         <div class="mb-4">
-            <h3 class="text-2xl font-bold mb-2">KulineRiau</h3>
-            <p class="text-blue-200">Cita Rasa Asli Riau dalam Setiap Gigitan</p>
+            <h3 class="text-2xl font-bold mb-2">KulinerKepri</h3>
+            <p class="text-blue-200">Cita Rasa Asli Kepulauan Riau dalam Setiap Gigitan</p>
         </div>
         <div class="flex justify-center space-x-6 mb-4">
             <a href="#" class="text-blue-200 hover:text-white transition-colors">Instagram</a>
             <a href="#" class="text-blue-200 hover:text-white transition-colors">WhatsApp</a>
             <a href="#" class="text-blue-200 hover:text-white transition-colors">Facebook</a>
         </div>
-        <p class="text-blue-300 text-sm">&copy; 2024 KulineRiau. Semua hak dilindungi.</p>
+        <p class="text-blue-300 text-sm">&copy; 2024 KulinerKepri. Semua hak dilindungi.</p>
     </div>
 </footer>
 @endsection

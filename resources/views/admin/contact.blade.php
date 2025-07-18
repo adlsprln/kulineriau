@@ -21,8 +21,8 @@
             <tbody>
                 @foreach($contacts as $contact)
                 <tr class="border-t border-blue-100">
-                    <td class="px-4 py-2">{{ $contact->user->name ?? '-' }}</td>
-                    <td class="px-4 py-2">{{ $contact->user->email ?? '-' }}</td>
+                    <td class="px-4 py-2">{{ $contact->user->name ?? $contact->name }}</td>
+                    <td class="px-4 py-2">{{ $contact->user->email ?? $contact->email }}</td>
                     <td class="px-4 py-2">{{ $contact->message }}</td>
                     <td class="px-4 py-2">{{ $contact->created_at->format('d M Y H:i') }}</td>
                 </tr>

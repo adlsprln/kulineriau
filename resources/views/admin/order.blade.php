@@ -19,6 +19,7 @@
                     <th class="px-4 py-2">Total</th>
                     <th class="px-4 py-2">Tanggal Order</th>
                     <th class="px-4 py-2">Status</th>
+                    <th class="px-4 py-2">Bukti Pembayaran</th> <!-- Tambah kolom -->
                     <th class="px-4 py-2">Aksi</th>
                 </tr>
             </thead>
@@ -39,6 +40,15 @@
                     </td>
                     <td class="px-4 py-2 align-middle text-center" rowspan="{{ $group->count() }}">{{ $firstOrder->status }}</td>
                     <td class="px-4 py-2 align-middle text-center" rowspan="{{ $group->count() }}">
+                        @if($firstOrder->payment_proof)
+                            <a href="{{ asset('storage/payment_proofs/' . $firstOrder->payment_proof) }}" target="_blank">
+                                <img src="{{ asset('storage/payment_proofs/' . $firstOrder->payment_proof) }}" alt="Bukti Pembayaran" style="width:70px; height:70px; object-fit:cover; border-radius:8px; border:1px solid #cbd5e1;">
+                            </a>
+                        @else
+                            <span class="text-gray-400 text-xs">Belum ada</span>
+                        @endif
+                    </td>
+                    <td class="px-4 py-2 align-middle text-center" rowspan="{{ $group->count() }}">
                         <form action="{{ route('admin.order.status.update', $checkout_code) }}" method="POST" class="flex items-center gap-2 justify-center">
                             @csrf
                             <select name="status" class="border rounded px-2 py-1">
@@ -56,10 +66,14 @@
                     <td class="px-4 py-2">{{ $order->menu->name ?? '-' }}</td>
                     <td class="px-4 py-2">{{ $order->quantity }}</td>
                     <td class="px-4 py-2 text-red-700 font-bold">Rp {{ number_format($order->menu->price ?? 0, 0, ',', '.') }}</td>
+                    <td></td> <!-- Tanggal Order -->
+                    <td></td> <!-- Status -->
+                    <td></td> <!-- Bukti Pembayaran -->
+                    <td></td> <!-- Aksi -->
                 </tr>
                 @endforeach
             @empty
-                <tr><td colspan="8" class="text-gray-500 text-center py-8">Belum ada pesanan.</td></tr>
+                <tr><td colspan="9" class="text-gray-500 text-center py-8">Belum ada pesanan.</td></tr>
             @endforelse
             </tbody>
         </table>

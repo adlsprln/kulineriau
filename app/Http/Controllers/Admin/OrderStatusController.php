@@ -25,7 +25,6 @@ class OrderStatusController extends Controller
             'status' => 'required|string',
         ]);
 
-
         // Update semua order dengan checkout_code yang sama
         $orders = Order::where('checkout_code', $checkout_code)->get();
         foreach ($orders as $order) {

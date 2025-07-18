@@ -13,11 +13,21 @@ class MenuController extends Controller
 
     public function index()
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
             abort(403, 'Anda tidak memiliki akses.');
         }
 
-        $menus = Menu::all();
+        $query = Menu::query();
+        if (request()->has('search') && request('search') !== null && request('search') !== '') {
+            $search = request('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('category', 'like', "%$search%")
+                  ->orWhere('description', 'like', "%$search%")
+                  ->orWhere('price', 'like', "%$search%") ;
+            });
+        }
+        $menus = $query->get();
         $users = \App\Models\User::where('role', 'user')->get();
         return view('admin.menu', compact('menus', 'users'));
     }

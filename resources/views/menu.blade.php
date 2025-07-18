@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KulineRiau - Menu</title>
+    <title>KulinerKepri - Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -82,15 +82,15 @@
         </div><footer class="bg-blue-900 text-white py-8 mt-16">
     <div class="container mx-auto px-6 text-center">
         <div class="mb-4">
-            <h3 class="text-2xl font-bold mb-2">KulineRiau</h3>
-            <p class="text-blue-200">Cita Rasa Asli Riau dalam Setiap Gigitan</p>
+            <h3 class="text-2xl font-bold mb-2">KulinerKepri</h3>
+            <p class="text-blue-200">Cita Rasa Asli Kepulauan Riau dalam Setiap Gigitan</p>
         </div>
         <div class="flex justify-center space-x-6 mb-4">
             <a href="#" class="text-blue-200 hover:text-white transition-colors">Instagram</a>
             <a href="#" class="text-blue-200 hover:text-white transition-colors">WhatsApp</a>
             <a href="#" class="text-blue-200 hover:text-white transition-colors">Facebook</a>
         </div>
-        <p class="text-blue-300 text-sm">&copy; 2024 KulineRiau. Semua hak dilindungi.</p>
+        <p class="text-blue-300 text-sm">&copy; 2024 KulinerKepri. Semua hak dilindungi.</p>
     </div>
 </footer>
 @endsection

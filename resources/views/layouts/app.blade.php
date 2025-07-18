@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'KULINERIAU')</title>
+    <title>@yield('title', 'KULINERKEPRI')</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -15,7 +15,7 @@
     <nav class="bg-blue-900 text-white shadow mb-8">
     <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
 
-        <div class="text-2xl font-bold">KulineRiau</div>
+        <div class="text-2xl font-bold">KulinerKepri</div>
 
         @if(Auth::check() && Auth::user()->isAdmin())
             {{-- NAVBAR UNTUK ADMIN --}}
