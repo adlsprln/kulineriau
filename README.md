@@ -65,6 +65,17 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-https://drive.google.com/file/d/1KOjHhb6c_WX2acXjTC_VEFzCnayGt8E9/view?usp=sharing //(link laporan)
-https://youtu.be/tQRhRwU3Mqo?si=6i3-jrzTxaejmEdM //(link demo)
-https://youtu.be/qI9QKFWxVcc?si=HTrVnN6ErcEDnVeZ //(link presentasi)
+## 👥 Anggota Kelompok
+
+1. Gracesiana T. (3312411047)
+2. Adela Seprilian (3312411037)
+3. Arga Dani (3312411034)
+4. Raka Maulana (3312411059)
+5. Loius Anderson (3312411049)
+
+## ✅ Link Berkas AAS
+
+- 🎤 **Video Presentasi**: [Tonton di YouTube](https://youtu.be/qI9QKFWxVcc?si=HTrVnN6ErcEDnVeZ)
+- 🖥️ **Video Demo Website**: [Tonton di YouTube](https://youtu.be/tQRhRwU3Mqo?si=6i3-jrzTxaejmEdM)
+- 📄 **Laporan Akhir**: [Lihat di Google Drive](https://drive.google.com/file/d/1KOjHhb6c_WX2acXjTC_VEFzCnayGt8E9/view?usp=sharing)
+
